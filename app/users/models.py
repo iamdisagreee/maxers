@@ -9,11 +9,11 @@ class User(BaseSchema):
     __tablename__ = 'users'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    username: Mapped[str] = mapped_column(String(50))
-    first_name: Mapped[str] = mapped_column(String(50))
-    role: Mapped[str] = mapped_column(String(50))
-    city: Mapped[str] = mapped_column(String(50))
-    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    username: Mapped[str] = mapped_column(String(50), nullable=False)
+    first_name: Mapped[str] = mapped_column(String(50), nullable=False)
+    role: Mapped[str] = mapped_column(String(50), nullable=False)
+    city: Mapped[str] = mapped_column(String(50), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(),  nullable=False)
 
     activity: Mapped['Activity'] = relationship(back_populates='user')
 
@@ -21,7 +21,7 @@ class Activity(BaseSchema):
     __tablename__ = 'activities'
 
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id', ondelete='cascade'), primary_key=True)
-    rating: Mapped[float] = mapped_column(Float)
-    completed_tasks: Mapped[int] = mapped_column(Integer)
+    rating: Mapped[float] = mapped_column(Float, nullable=False)
+    completed_tasks: Mapped[int] = mapped_column(Integer, server_default=text('0'), nullable=False)
 
     user: Mapped['User'] = relationship(back_populates='activity')

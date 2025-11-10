@@ -5,6 +5,8 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     postgres_connect: Optional[str] = None
+    jwt_secret_key: Optional[str] = None
+    jwt_algorithm: Optional[str] = None
 
     model_config = SettingsConfigDict(
         env_file ='.env',

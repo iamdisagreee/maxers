@@ -1,12 +1,12 @@
-from fastapi import APIRouter, UploadFile, File, Depends, Header, HTTPException, Security
+from fastapi import APIRouter, UploadFile, File, Depends, Header, HTTPException, Security, status
 from fastapi.responses import JSONResponse
 
-from .schemas import AddUser
+from .schemas import AddUser, GetUserResponse, AddUserResponse
 from ..core.dependecies import get_user_service
 
 router = APIRouter(prefix='/users', tags=['users'])
 
-@router.post("/", response_class=JSONResponse)
+@router.post('/', response_model=AddUserResponse, status_code=status.HTTP_201_CREATED)
 async def create_add_user(
         add_user: AddUser,
         user_service = Depends(get_user_service)):
@@ -18,3 +18,11 @@ async def create_add_user(
         role=add_user.role,
         city=add_user.city
     )
+
+@router.get('/{user_id}', response_model=GetUserResponse)
+async def create_get_user(
+        user_id: int,
+        user_service = Depends(get_user_service)
+):
+    """ Получение данных о пользователе """
+    return await user_service.get_user(user_id=user_id)
