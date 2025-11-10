@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React from 'react'
+import NavBar from './components/NavBar'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import Home from './pages/Catalog'
+import Start from './pages/Start'
+import User from './pages/User'
+import BottomNav from './components/BottomNav'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+    const location = useLocation()
+  
+  // Массив путей, где хотим показывать BottomNav
+  const showBottomNavPaths = ['/', 'catalog']
 
+  const shouldShowBottomNav = showBottomNavPaths.includes(location.pathname)
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='app-container'>
+      <div className="header">
+        <NavBar />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <main className='content-wrapper'>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/start" element={<Start />} />
+          <Route path="/user/:id" element={<User />} />
+        </Routes>
+      </main>
+      {shouldShowBottomNav && <BottomNav />}
+    </div>
   )
 }
-
-export default App

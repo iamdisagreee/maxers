@@ -1,0 +1,9 @@
+.catalog-h{
+    padding: 20px 0;
+}
+
+.tasks-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

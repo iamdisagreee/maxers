@@ -1,0 +1,52 @@
+.task-card__user-info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task-card__location{
+    display: flex;
+    gap: 8px;
+}
+
+.task-card{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.task-card-center, .task-card-bottom{
+    padding-left: 10px;
+}
+
+.task-card__points{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+
+.task-card__points{
+    background-color: var(--lsecondary);
+    border: 2px solid var(--dsecondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}
+
+.card-points__icon{
+    width: 20px;
+    height: 20px;
+    color: var(--dsecondary);
+}
+
+.card-points__value{
+    color: var(--dsecondary);
+}

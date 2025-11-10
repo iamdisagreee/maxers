@@ -1,0 +1,41 @@
+.start-text{
+    margin-top: 51px;
+    text-align: center;
+}
+
+.logo-svg{
+    width: 24px;
+    height: 24px;
+}
+
+.start-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 25px 20px 25px 25px;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.start-card .p{
+    opacity: 0.8;
+}
+
+.start-cards-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 25px 0px;
+}
+
+.start-card-chosen{
+    background-color: var(--dsecondary);
+}
+
+.start-form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

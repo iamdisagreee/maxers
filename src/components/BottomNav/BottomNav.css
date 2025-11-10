@@ -1,0 +1,23 @@
+.bottom-nav{
+    height: 70px;
+    width: 100%;
+    max-width: 390px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5px;
+    margin-top: auto;
+    position: fixed;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bottom-nav__button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 10px;
+    flex-grow: 1;
+    border-radius: 25px;
+}

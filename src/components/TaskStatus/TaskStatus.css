@@ -1,0 +1,14 @@
+.task-status__icon{
+    width: 12px;
+    height: 12px;
+}
+
+.task-status{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    gap: 10px;
+    border-radius: 12px;
+}
+
