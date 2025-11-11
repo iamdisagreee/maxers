@@ -25,5 +25,14 @@ class GetTaskResponse(CamelCaseModel):
     created_at: datetime
     finished_at: Optional[datetime]
 
+class UpdateTaskRating(CamelCaseModel):
+    task_points: Optional[int] = 0
+    review_points: int = 0
+    reason_reject: Literal['Physical', 'Plans', 'Search'] | None
+
 class UpdateTask(CamelCaseModel):
     status: Literal['Pending', 'Process', 'Cancelled', 'Completed']
+    helper: Optional[str]
+    role: str
+    rating: UpdateTaskRating
+

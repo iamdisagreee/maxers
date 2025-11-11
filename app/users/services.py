@@ -77,7 +77,9 @@ class UserService:
             rating=base_rating
         )
 
-        access_token = self.create_access_token({'sub': user_id})
+        access_token = self.create_access_token(
+            {'sub': str(user_id), 'role': role}
+        )
 
         return {
                 'detail': 'User successfully created',

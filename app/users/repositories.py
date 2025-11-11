@@ -50,3 +50,21 @@ class UserRepository:
             .where(User.id == user_id)
             .options(selectinload(User.activity))
         )
+
+    async def update_activity(
+            self,
+            user_id: int,
+            role: str,
+            add_points: int
+    ):
+        return await self.postgres.execute(
+            update(Activity)
+            .values(
+                rating=Activity.points + add_points if role == 'Helper' else (Activity.points + add_points) % 5,
+                completed_tasks=Activity.completed_tasks + 1
+            )
+            .where(Activity.user_id == user_id)
+        )
+
+    async def commit(self):
+        await self.postgres.commit()

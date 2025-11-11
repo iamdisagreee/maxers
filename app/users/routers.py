@@ -1,8 +1,8 @@
 from fastapi import APIRouter, UploadFile, File, Depends, Header, HTTPException, Security, status
 from fastapi.responses import JSONResponse
 
-from .schemas import AddUser, GetUserResponse, AddUserResponse
-from ..core.dependecies import get_user_service
+from .schemas import AddUser, GetUserResponse, AddUserResponse, GetUserByToken
+from ..core.dependecies import get_user_service, get_current_user
 
 router = APIRouter(prefix='/users', tags=['users'])
 
@@ -19,10 +19,11 @@ async def create_add_user(
         city=add_user.city
     )
 
-@router.get('/{user_id}', response_model=GetUserResponse)
+@router.get('/', response_model=GetUserResponse)
 async def create_get_user(
-        user_id: int,
-        user_service = Depends(get_user_service)
+        user_service = Depends(get_user_service),
+        current_user: GetUserByToken = Depends(get_current_user)
 ):
     """ Получение данных о пользователе """
-    return await user_service.get_user(user_id=user_id)
+    return await user_service.get_user(user_id=current_user.user_id)
+

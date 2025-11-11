@@ -16,6 +16,10 @@ class AddUserResponse(CamelCaseModel):
     detail: str
     access_token: str
 
+class GetUserByToken(CamelCaseModel):
+    user_id: int
+    role: str
+
 class GetActivityResponse(CamelCaseModel):
     rating: float
     completed_tasks: int

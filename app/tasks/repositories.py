@@ -1,3 +1,5 @@
+from datetime import datetime
+from typing import Optional, Dict, Any
 from uuid import UUID
 
 from fastapi import HTTPException, status
@@ -43,13 +45,17 @@ class TaskRepository:
     async def update_task(
             self,
             task_id: UUID,
-            status: str
+            to_update: dict[str, Any]
     ):
         return await self.postgres.execute(
             update(Task)
-            .values(status=status)
+            .values(**to_update)
             .where(Task.id == task_id)
+            .returning(Task)
         )
 
     async def commit(self):
         await self.postgres.commit()
+
+    async def rollback(self):
+        await self.postgres.rollback()
