@@ -11,6 +11,7 @@
   box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
   z-index: 9999;
   max-width: 390px;
+  max-height: 50px;
 }
 
 .nav-buttons {
@@ -26,8 +27,6 @@
   flex: 1;
   text-align: center;
   padding: 10px 0;
-  color: white;
-  font-weight: bold;
   cursor: pointer;
   z-index: 2;
   display: flex;
@@ -38,9 +37,9 @@
 }
 
 .nav-button .icon {
-  width: 24px;
-  height: 24px;
-  margin-bottom: 5px;
+  width: 20px;
+  height: 20px;
+  margin-bottom: 3px;
 }
 
 .nav-button.active {

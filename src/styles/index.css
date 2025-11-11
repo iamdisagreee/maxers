@@ -103,6 +103,7 @@ html{
 .gradient-primary {
   background: linear-gradient(45deg, var(--dprimary), var(--lprimary));
   -webkit-background-clip: text;  /* обрезает фон по тексту */
+  background-clip: text;
   -webkit-text-fill-color: transparent; /* делает текст прозрачным, чтобы видеть фон */
 }
 
@@ -112,6 +113,10 @@ html{
 
 .primary-bg{
   background-color: var(--primary);
+}
+
+.secondary-bg{
+  background-color: var(--secondary);
 }
 
 .h1 {

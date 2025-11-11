@@ -14,14 +14,14 @@ export default function BottomNav() {
           onClick={() => setActive('catalog')}
         >
           <img src={catalog} alt="Catalog" className="icon" />
-          <span>Каталог</span>
+          <span className='color-white inter-400'>Каталог</span>
         </div>
         <div
           className={`nav-button ${active === 'profile' ? 'active' : ''}`}
           onClick={() => setActive('profile')}
         >
           <img src={profile} alt="Profile" className="icon" />
-          <span>Профиль</span>
+          <span className='color-white inter-400'>Профиль</span>
         </div>
         {/* Шарик */}
         <div

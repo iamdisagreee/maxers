@@ -1,12 +1,12 @@
 import React from 'react'
 import './TaskStatus.css'
-import STATUS_MAP from './StatusConfig'
+import STATUS_MAP from './StatusConfig.js'
 
 export default function TaskStatus({ type }) {
   const current = STATUS_MAP[type] || { text: 'Неизвестно', icon: null }
 
   return (
-    <div className="task-status gradient-primary-bg">
+    <div className={`task-status ${current.class}`}>
       {current.icon && (
         <img
           src={current.icon}
