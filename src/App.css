@@ -1,11 +1,18 @@
 .app-container{
   display: flex;
   flex-direction: column;
+  justify-content: start;
+  align-items: center;
   width: 390px;
-  min-height: 100vh;
+  height: 100vh;
   margin: 0 auto;
 }
 
 body{
-  background-color: var(--fwhite);
+  background-color: #eeeeee;
+  background: linear-gradient(to right, 
+    var(--fwhite) 25%,   /* левый край */
+    var(--backcolor),  /* центр */
+    var(--fwhite) 75%  /* правый край */
+);
 }

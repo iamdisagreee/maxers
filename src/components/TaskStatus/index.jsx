@@ -14,7 +14,7 @@ export default function TaskStatus({ type }) {
           className="task-status__icon"
         />
       )}
-      <span className="task-status__title color-white inter-500">
+      <span className="task-status__title color-white inter-500 p">
         {current.text}
       </span>
     </div>

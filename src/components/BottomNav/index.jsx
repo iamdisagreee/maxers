@@ -1,24 +1,34 @@
-import React from 'react'
-import './BottomNav.css'
-import catalog from '../../assets/svg/catalog.svg'
-import profile from '../../assets/svg/profile.svg'
-import {Button, ToolButton} from '@maxhub/max-ui';
+import React, { useState } from 'react';
+import './BottomNav.css';
+import catalog from '../../assets/svg/catalog.svg';
+import profile from '../../assets/svg/profile.svg';
 
+export default function BottomNav() {
+  const [active, setActive] = useState('catalog');
 
-export default function NavBar() {
   return (
     <div className="bottom-nav">
-      {/* <ToolButton appearance="default">      </ToolButton> */}
-        <Button size='large' mode='primary' appearance='themed' stretched='true' iconBefore={<img src={catalog} alt="Каталог" style={{ width: 20, height: 20 }} />}>Каталог</Button>
-        <Button size='large' mode='primary' appearance='neutral-themed' stretched='true' iconBefore={<img src={profile} alt="Профиль" style={{ width: 20, height: 20 }} />}>Профиль</Button>
-        {/* <div className="bottom-nav__button primary-bg">
-            <img src={catalog} alt="Каталог" className="bottom-nav__button__icon"/>
-            <div className="bottom-nav__button__text inter-500 color-white">Каталог</div>
+      <div className="nav-buttons">
+        <div
+          className={`nav-button ${active === 'catalog' ? 'active' : ''}`}
+          onClick={() => setActive('catalog')}
+        >
+          <img src={catalog} alt="Catalog" className="icon" />
+          <span>Каталог</span>
         </div>
-        <div className="bottom-nav__button primary-bg">
-            <img src={catalog} alt="Каталог" className="bottom-nav__button__icon"/>
-            <div className="bottom-nav__button__text inter-500 color-white">Каталог</div>
-        </div> */}
+        <div
+          className={`nav-button ${active === 'profile' ? 'active' : ''}`}
+          onClick={() => setActive('profile')}
+        >
+          <img src={profile} alt="Profile" className="icon" />
+          <span>Профиль</span>
+        </div>
+        {/* Шарик */}
+        <div
+          className="slider"
+          style={{ transform: active === 'catalog' ? 'translateX(0%)' : 'translateX(100%)' }}
+        ></div>
+      </div>
     </div>
-  )
+  );
 }

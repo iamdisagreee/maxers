@@ -22,8 +22,10 @@ export default function App() {
       <main className='content-wrapper'>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/WebAppData" element={<Start />} />
           <Route path="/start" element={<Start />} />
           <Route path="/user/:id" element={<User />} />
+          <Route path="*" element={<Start />} />
         </Routes>
       </main>
       {shouldShowBottomNav && <BottomNav />}

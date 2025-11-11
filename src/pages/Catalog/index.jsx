@@ -13,6 +13,8 @@ export default function Home() {
         <TaskCard></TaskCard>
         <TaskCard></TaskCard>
         <TaskCard></TaskCard>
+        <TaskCard></TaskCard>
+        <TaskCard></TaskCard>
       </div>
     </div>
   

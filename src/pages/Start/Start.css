@@ -1,6 +1,13 @@
 .start-text{
-    margin-top: 51px;
+    margin-top: 10px;
     text-align: center;
+}
+
+.startpage-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 844px;
 }
 
 .logo-svg{
@@ -31,7 +38,15 @@
 }
 
 .start-card-chosen{
-    background-color: var(--dsecondary);
+    background-color: var(--lsecondary);
+}
+
+.start-card__img{
+    color: var(--lsecondary);
+}
+
+.start-card-chosen .start-card__img{
+    color: var(--lprimary);
 }
 
 .start-form{
