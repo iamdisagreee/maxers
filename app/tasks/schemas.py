@@ -1,24 +1,38 @@
 from datetime import datetime
 from typing import Literal, Optional
+from enum import Enum
+from pydantic import field_validator
 
-from ..common.model_base import CamelCaseModel
+from ..common.schema_base import CamelCaseModel
 
 class TaskResponse(CamelCaseModel):
     detail: str
 
+class CategoryEnum(Enum):
+    medicine = 'Medicine'
+    repairs = 'Repairs'
+    technique = 'Technique'
+    physical = 'Physical'
+    communication = 'Communication'
+    different = 'Different'
+
 class AddTask(CamelCaseModel):
-    needy: int
-    category: str
+    category: CategoryEnum
     name: str
     description: str
     address: str
+
+    @field_validator('name', mode='after')
+    @classmethod
+    def capitalize_string_fields(cls, value: str) -> str:
+        return value.capitalize()
 
 class GetTaskResponse(CamelCaseModel):
     status: str
     needy: int
     helper: Optional[int]
     points: int
-    category: str
+    category: CategoryEnum
     name: str
     description: str
     address: str
@@ -26,13 +40,13 @@ class GetTaskResponse(CamelCaseModel):
     finished_at: Optional[datetime]
 
 class UpdateTaskRating(CamelCaseModel):
-    task_points: Optional[int] = 0
-    review_points: int = 0
+    task_points: Optional[int] = None
+    review_points: Optional[int] = None
     reason_reject: Literal['Physical', 'Plans', 'Search'] | None
 
 class UpdateTask(CamelCaseModel):
     status: Literal['Pending', 'Process', 'Cancelled', 'Completed']
-    helper: Optional[str]
-    role: str
+    helper: Optional[int] = None
     rating: UpdateTaskRating
 
+# class ProcessingReport(CamelCaseModel):

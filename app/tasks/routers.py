@@ -17,8 +17,9 @@ async def create_add_task(
 ):
     """ Создание задачи """
     return await task_service.add_task(
-        needy=add_task.needy,
-        category=add_task.category,
+        user_id=current_user.user_id,
+        role=current_user.role,
+        category=add_task.category.value,
         name=add_task.name,
         description=add_task.description,
         address=add_task.address,
@@ -33,20 +34,33 @@ async def create_get_task(
     """ Получение информации о задаче """
     return await task_service.get_task(task_id=task_id)
 
-@router.patch('/{task_id}', response_model=UpdateTask)
+@router.patch('/{task_id}', response_model=TaskResponse)
 async def create_update_task(
         task_id: UUID,
         update_task: UpdateTask,
         task_service=Depends(get_task_service),
         current_user: GetUserByToken = Depends(get_current_user)
 ):
+
     return await task_service.update_task(
         task_id=task_id,
-        status=update_task.status,
-        helper=update_task.helper,
-        # user_id=current_user.user_id,
         role=current_user.role,
+        user_status=update_task.status,
+        helper=update_task.helper,
         task_points=update_task.rating.task_points,
         review_points=update_task.rating.review_points,
         reason_reject=update_task.rating.reason_reject
+    )
+
+@router.post('/{task_id}/reports', response_class=...)
+async def create_processing_report(
+        task_id: UUID,
+        task_service=Depends(get_task_service),
+        current_user: GetUserByToken = Depends(get_current_user)
+):
+    """ Обработка жалобы от хелпера на задание """
+    return await task_service.processing_report(
+        user_id=current_user.user_id,
+        role=current_user.role,
+        task_id=task_id
     )

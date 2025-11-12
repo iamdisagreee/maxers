@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, Depends, Header, HTTPException, Security, status
 from fastapi.responses import JSONResponse
 
-from .schemas import AddUser, GetUserResponse, AddUserResponse, GetUserByToken
+from .schemas import AddUser, GetUserResponse, AddUserResponse, GetUserByToken, UpdateUser, UpdateUserResponse
 from ..core.dependecies import get_user_service, get_current_user
 
 router = APIRouter(prefix='/users', tags=['users'])
@@ -15,7 +15,7 @@ async def create_add_user(
         user_id=add_user.user_id,
         username=add_user.username,
         first_name=add_user.first_name,
-        role=add_user.role,
+        role=add_user.role.value,
         city=add_user.city
     )
 
@@ -27,3 +27,13 @@ async def create_get_user(
     """ Получение данных о пользователе """
     return await user_service.get_user(user_id=current_user.user_id)
 
+@router.patch('/', response_model=UpdateUserResponse)
+async def create_update_user(
+        update_user: UpdateUser,
+        user_service=Depends(get_user_service),
+        current_user: GetUserByToken = Depends(get_current_user)
+):
+    return await user_service.update_user(
+        user_id=current_user.user_id,
+        city=update_user.city
+    )

@@ -23,5 +23,6 @@ class Activity(BaseSchema):
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id', ondelete='cascade'), primary_key=True)
     rating: Mapped[float] = mapped_column(Float, nullable=False)
     completed_tasks: Mapped[int] = mapped_column(Integer, server_default=text('0'), nullable=False)
+    count_reports: Mapped[int] = mapped_column(Integer, server_default=text('0'), nullable=False)
 
     user: Mapped['User'] = relationship(back_populates='activity')

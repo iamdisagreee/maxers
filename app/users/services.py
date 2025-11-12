@@ -104,3 +104,29 @@ class UserService:
                 ]
             )
         return user
+
+    async def update_user(
+            self,
+            user_id: int,
+            city: str
+    ):
+        if not await self.check_city(city=city):
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail= [
+                    {
+                        'msg': 'No city with this name found'
+                    }
+                ]
+            )
+
+        updated_user = await self.user_repo.update_user(
+            user_id=user_id,
+            city=city
+        )
+
+        await self.user_repo.commit()
+
+        return {'detail': 'User successfully updated'}
+
+

@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 from .postgres import session_maker
+from ..common.repositories import BlacklistTaskRepository
 from ..config import get_settings, Settings
 from ..tasks.repositories import TaskRepository
 from ..tasks.services import TaskService
@@ -39,13 +40,20 @@ async def get_task_repository(
 ) -> TaskRepository:
     return TaskRepository(postgres=postgres)
 
+async def get_blacklist_task_repository(
+        postgres: AsyncSession = Depends(get_postgres)
+) -> BlacklistTaskRepository:
+    return BlacklistTaskRepository(postgres=postgres)
+
 async def get_task_service(
         task_repo: TaskRepository = Depends(get_task_repository),
-        user_repo: UserRepository = Depends(get_user_repository)
+        user_repo: UserRepository = Depends(get_user_repository),
+        blacklist_task_repo: BlacklistTaskRepository = Depends(get_blacklist_task_repository)
 ) -> TaskService:
     return TaskService(
         task_repo=task_repo,
-        user_repo=user_repo
+        user_repo=user_repo,
+        blck_task_repo=blacklist_task_repo
     )
 
 async def get_current_user(
@@ -63,7 +71,7 @@ async def get_current_user(
     try:
         payload = jwt.decode(token, settings.jwt_secret_key, algorithms=[settings.jwt_algorithm])
         user_id = int(payload.get('sub'))
-        role = payload.get('sub')
+        role = payload.get('role')
     except jwt.PyJWTError:
         raise credentials_exception
 

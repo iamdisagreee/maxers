@@ -1,16 +1,28 @@
+import math
 from typing import Literal
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, alias_generators, Field, EmailStr, computed_field
+from enum import Enum
+from pydantic import BaseModel, ConfigDict, alias_generators, Field, EmailStr, computed_field, field_validator
 
-from ..common.model_base import CamelCaseModel
+from ..common.schema_base import CamelCaseModel
 
+
+class RoleEnum(Enum):
+    helper = 'Helper'
+    needy = 'Needy'
 
 class AddUser(CamelCaseModel):
     user_id: int
     username: str
     first_name: str
-    role: Literal['Helper', 'Needy']
+    role: RoleEnum
     city: str
+
+    @field_validator('username', 'first_name', 'city', mode='after')
+    @classmethod
+    def capitalize_string_fields(cls, value: str) -> str:
+        return value.capitalize()
+
 
 class AddUserResponse(CamelCaseModel):
     detail: str
@@ -23,6 +35,12 @@ class GetUserByToken(CamelCaseModel):
 class GetActivityResponse(CamelCaseModel):
     rating: float
     completed_tasks: int
+    count_complaints: int
+
+    @field_validator('rating', mode='after')
+    @classmethod
+    def round_float_fields(cls, value: float) -> float:
+        return round(value, 2)
 
 class GetUserResponse(CamelCaseModel):
     user_id: int = Field(alias="id")
@@ -33,3 +51,8 @@ class GetUserResponse(CamelCaseModel):
     created_at: datetime
     activity: GetActivityResponse
 
+class UpdateUser(CamelCaseModel):
+    city: str
+
+class UpdateUserResponse(CamelCaseModel):
+    detail: str

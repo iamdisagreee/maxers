@@ -22,6 +22,7 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 from app.users.models import User, Activity
 from app.tasks.models import Task
+from app.common.models import BlacklistTask
 from app.core.postgres import BaseSchema
 
 target_metadata = BaseSchema.metadata
