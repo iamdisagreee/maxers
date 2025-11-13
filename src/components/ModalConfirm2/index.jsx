@@ -9,8 +9,7 @@ export default function ModalConfirm2() {
   return (
     <div className="modal-bg">
       <div className="modal-wrapper">
-        <span className="modal-text inter-500 h6">Проверьте, всё ли верно?</span>
-        <span className="modal-description inter-400">После подтверждения вы будете зарегистрированы как «<span className="inter-600">Волонтер</span>», и <span className="inter-600">изменить эту роль будет нельзя</span></span>
+        <span className="modal-text inter-500 h6">Уверены в своём выборе?</span>
         <div className="modal-buttons">
           <div
             className="modal-button modal-cancel inter-700 p"

@@ -8,10 +8,22 @@ import BottomNav from './components/BottomNav'
 import './App.css'
 
 export default function App() {
-    const location = useLocation()
+  // try{
+  //     const wa = window.WebApp
+  //     alert("start2")
+  //     console.log(wa.HapticFeedback.impactOccurred("heavy", false))
+  //     console.warn(wa.initDataUnsafe.WebAppData.user)
+  //     alert("end")
+  // }
+  // catch(e){
+  //   console.error(e)
+  //   console.log(wa.initDataUnsafe.WebAppData)
+  // }
+
+  const location = useLocation()
   
   // Массив путей, где хотим показывать BottomNav
-  const showBottomNavPaths = ['/', 'catalog']
+const showBottomNavPaths = ['/', '/catalog', '/profile']
 
   const shouldShowBottomNav = showBottomNavPaths.includes(location.pathname)
   return (
@@ -25,6 +37,7 @@ export default function App() {
           <Route path="/WebAppData" element={<Start />} />
           <Route path="/start" element={<Start />} />
           <Route path="/user/:id" element={<User />} />
+          <Route path="/profile" element={<User />} />
           <Route path="*" element={<Start />} />
         </Routes>
       </main>

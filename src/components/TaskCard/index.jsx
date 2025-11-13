@@ -7,10 +7,16 @@ import mapPin from '../../assets/svg/map-pin.svg'
 import personIcon from '../../assets/svg/person.svg'
 // import CATEGORY_MAP from '../TaskCategory/CategoryConfig';
 import PillIcon from '../../assets/svg/pill.svg?react';
+import openTaskOpener from "../TaskOpener/openTaskOpener";
 
 export default function TaskCard({ type }) {
+  const handleClick = () => {
+    openTaskOpener({
+      onClose: () => console.log("закрыто"),
+    });
+  };    
   return (
-    <div>
+    <div onClick={handleClick}>
         {type === "helper" && (
         <div className={`task-card ${type}`}>
             <div className="task-card-top">
