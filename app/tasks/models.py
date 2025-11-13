@@ -1,3 +1,4 @@
+from typing import List
 from uuid import UUID
 from datetime import datetime
 
@@ -6,6 +7,8 @@ from sqlalchemy import  Integer, DateTime, String, func, ForeignKey, Float, Uuid
 from sqlalchemy.sql import text
 
 from ..core.postgres import BaseSchema
+from ..common import models
+
 
 
 class Task(BaseSchema):
@@ -23,3 +26,4 @@ class Task(BaseSchema):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     finished_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
 
+    blacklist_task: Mapped[List['models.BlacklistTask']] = relationship(back_populates='task')

@@ -1,5 +1,5 @@
 import math
-from typing import Literal
+from typing import Literal, List
 from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel, ConfigDict, alias_generators, Field, EmailStr, computed_field, field_validator
@@ -35,12 +35,13 @@ class GetUserByToken(CamelCaseModel):
 class GetActivityResponse(CamelCaseModel):
     rating: float
     completed_tasks: int
-    count_complaints: int
+    count_reports: int
 
     @field_validator('rating', mode='after')
     @classmethod
     def round_float_fields(cls, value: float) -> float:
         return round(value, 2)
+
 
 class GetUserResponse(CamelCaseModel):
     user_id: int = Field(alias="id")
@@ -50,6 +51,15 @@ class GetUserResponse(CamelCaseModel):
     city: str
     created_at: datetime
     activity: GetActivityResponse
+
+class GetCurrentUser(GetUserResponse):
+    place: int
+    is_top: bool
+
+class GetUserResponseList(CamelCaseModel):
+    users: List['GetUserResponse']
+    current: GetCurrentUser
+
 
 class UpdateUser(CamelCaseModel):
     city: str

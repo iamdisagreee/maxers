@@ -1,9 +1,11 @@
+from typing import List, Annotated, Literal
 from uuid import UUID
+from pydantic import Field
 
 from fastapi import APIRouter, UploadFile, File, Depends, Header, HTTPException, Security, status
 from fastapi.responses import JSONResponse
 
-from .schemas import AddTask, TaskResponse, GetTaskResponse, UpdateTask
+from .schemas import AddTask, TaskResponse, GetTaskResponse, UpdateTask, GetAllTasks
 from ..core.dependecies import get_task_service, get_current_user
 from ..users.schemas import GetUserByToken
 
@@ -25,14 +27,31 @@ async def create_add_task(
         address=add_task.address,
     )
 
+@router.get('/list/{page}', response_model=List[GetTaskResponse])
+async def create_get_all_tasks(
+        page: Annotated[int, Field(gt=0)],
+        type_list: Literal['user', 'pending', 'process', 'cancelled', 'completed'],
+        task_service=Depends(get_task_service),
+        current_user: GetUserByToken = Depends(get_current_user)
+):
+    """ Получение всех заданий """
+    return await task_service.get_all_tasks(
+        user_id=current_user.user_id,
+        type_list=type_list,
+        page=page,
+    )
+
 @router.get('/{task_id}', response_model=GetTaskResponse)
 async def create_get_task(
         task_id: UUID,
         task_service=Depends(get_task_service),
         current_user: GetUserByToken = Depends(get_current_user)
 ):
-    """ Получение информации о задаче """
-    return await task_service.get_task(task_id=task_id)
+    """ Получение информации о задании """
+    return await task_service.get_task(
+        user_id=current_user.user_id,
+        task_id=task_id
+    )
 
 @router.patch('/{task_id}', response_model=TaskResponse)
 async def create_update_task(
@@ -41,10 +60,11 @@ async def create_update_task(
         task_service=Depends(get_task_service),
         current_user: GetUserByToken = Depends(get_current_user)
 ):
-
+    """ Обновление задания """
     return await task_service.update_task(
-        task_id=task_id,
+        user_id=current_user.user_id,
         role=current_user.role,
+        task_id=task_id,
         user_status=update_task.status,
         helper=update_task.helper,
         task_points=update_task.rating.task_points,
@@ -52,7 +72,7 @@ async def create_update_task(
         reason_reject=update_task.rating.reason_reject
     )
 
-@router.post('/{task_id}/reports', response_class=...)
+@router.post('/{task_id}/reports', response_model=TaskResponse)
 async def create_processing_report(
         task_id: UUID,
         task_service=Depends(get_task_service),

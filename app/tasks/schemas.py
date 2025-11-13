@@ -1,7 +1,11 @@
 from datetime import datetime
-from typing import Literal, Optional
+from typing import Literal, Optional, Annotated
 from enum import Enum
-from pydantic import field_validator
+from uuid import UUID
+from zoneinfo import ZoneInfo
+
+from click.types import UUIDParameterType
+from pydantic import field_validator, Field
 
 from ..common.schema_base import CamelCaseModel
 
@@ -27,7 +31,11 @@ class AddTask(CamelCaseModel):
     def capitalize_string_fields(cls, value: str) -> str:
         return value.capitalize()
 
+class GetAllTasks(CamelCaseModel):
+    page: Annotated[int, Field(gt=0)]
+
 class GetTaskResponse(CamelCaseModel):
+    id: UUID
     status: str
     needy: int
     helper: Optional[int]

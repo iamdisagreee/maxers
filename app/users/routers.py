@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, UploadFile, File, Depends, Header, HTTPException, Security, status
 from fastapi.responses import JSONResponse
 
@@ -19,6 +21,16 @@ async def create_add_user(
         city=add_user.city
     )
 
+@router.get('/list')#, response_model=List[GetUserResponse])
+async def create_get_all_users(
+        user_service = Depends(get_user_service),
+        current_user: GetUserByToken = Depends(get_current_user)
+):
+    return await user_service.get_all_users(
+        user_id=current_user.user_id,
+        role=current_user.role
+    )
+
 @router.get('/', response_model=GetUserResponse)
 async def create_get_user(
         user_service = Depends(get_user_service),
@@ -33,6 +45,7 @@ async def create_update_user(
         user_service=Depends(get_user_service),
         current_user: GetUserByToken = Depends(get_current_user)
 ):
+    """ Оновление данных о пользователе """
     return await user_service.update_user(
         user_id=current_user.user_id,
         city=update_user.city

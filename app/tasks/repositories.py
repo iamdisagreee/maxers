@@ -4,11 +4,12 @@ from uuid import UUID
 
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import delete, select, update, desc, asc, func
+from sqlalchemy import delete, select, update, desc, asc, func, or_, and_
 from sqlalchemy.orm import selectinload
 from sqlalchemy.dialects.postgresql import insert
 
 from .models import Task
+from ..common.models import BlacklistTask
 
 
 class TaskRepository:
@@ -33,24 +34,71 @@ class TaskRepository:
         )
         await self.postgres.commit()
 
+    async def get_all_tasks_by_user(
+            self,
+            user_id: int,
+            limit: int,
+            offset: int
+    ):
+        return await self.postgres.scalars(
+            select(Task)
+            .outerjoin(
+                BlacklistTask,
+                and_(
+                    Task.id == BlacklistTask.task_id,
+                    BlacklistTask.user_id == user_id
+                )
+            )
+            .where(
+                BlacklistTask.user_id.is_(None),
+            )
+            .limit(limit)
+            .offset(offset)
+            .order_by(Task.created_at)
+        )
+
+    async def get_all_tasks_by_status(
+            self,
+            status: str,
+            limit: int,
+            offset: int
+    ):
+        return await self.postgres.scalars(
+            select(Task)
+            .where(
+                Task.status == status
+            )
+            .limit(limit)
+            .offset(offset)
+            .order_by(Task.created_at)
+        )
+
     async def get_task_by_id(
             self,
+            user_id: int,
             task_id: UUID
     ):
         return await self.postgres.scalar(
             select(Task)
-            .where(Task.id == task_id)
+            .where(
+                Task.id == task_id,
+                or_(Task.helper == user_id, Task.needy == user_id)
+            )
         )
 
     async def update_task(
             self,
+            user_id: int,
             task_id: UUID,
             to_update: dict[str, Any]
     ):
         return await self.postgres.execute(
             update(Task)
             .values(**to_update)
-            .where(Task.id == task_id)
+            .where(
+                Task.id == task_id,
+                or_(Task.helper == user_id, Task.needy == user_id)
+            )
             .returning(Task)
         )
 

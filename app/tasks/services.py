@@ -1,4 +1,5 @@
 from datetime import datetime
+from resource import RLIMIT_MEMLOCK
 from typing import Optional, Dict, Any
 from uuid import UUID
 
@@ -31,6 +32,15 @@ class TaskService:
             description: str,
             address: str,
     ):
+        if role == 'Helper':
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=[
+                    {
+                        'msg': "This method can`t be use by helper"
+                    }
+                ]
+            )
 
         is_user_needy = await self.user_repo.get_user_by_id_needy(
             user_id=user_id,
@@ -46,6 +56,7 @@ class TaskService:
                     }
                 ]
         )
+
         points = 5
         await self.task_repo.add_task(
             needy=user_id,
@@ -58,29 +69,56 @@ class TaskService:
 
         return {'detail': 'Task successfully created'}
 
+    async def get_all_tasks(
+            self,
+            user_id: int,
+            type_list: str,
+            page: int
+    ):
+        limit = 10
+        offset = (page - 1) * limit
+        if type_list == 'user':
+            all_tasks = await self.task_repo.get_all_tasks_by_user(
+                user_id=user_id,
+                limit=limit,
+                offset=offset
+            )
+        else:
+            all_tasks = await self.task_repo.get_all_tasks_by_status(
+                status=type_list.capitalize(),
+                limit=limit,
+                offset=offset
+            )
+
+        return all_tasks
+
     async def get_task(
             self,
+            user_id: int,
             task_id: UUID
     ):
-        task = await self.task_repo.get_task_by_id(task_id=task_id)
+
+        task = await self.task_repo.get_task_by_id(
+            user_id=user_id,
+            task_id=task_id,
+        )
         if not task:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail= [
                     {
-                        'msg': 'No task with this id'
+                        'msg': 'No task with this id / No access to view'
                     }
                 ]
             )
+        # print(task.created_at)
         return task
-
-    async def update_activity(self):
-        pass
 
     async def update_task(
             self,
-            task_id: UUID,
+            user_id: int,
             role: str,
+            task_id: UUID,
             user_status: str,
             helper: int,
             task_points: int,
@@ -145,23 +183,24 @@ class TaskService:
                 to_update.update({'finished_at': datetime.now()})
 
         update_task = await self.task_repo.update_task(
+            user_id=user_id,
             task_id=task_id,
             to_update=to_update
         )
         await self.task_repo.commit()
+        task_scalar = update_task.scalar()
 
-        if not update_task:
+        if not task_scalar:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail= [
                     {
-                        'msg': 'No task with this id'
+                        'msg': 'No task with this id / No access to update'
                     }
                 ]
             )
 
         if user_status in ('Cancelled', 'Completed'):
-            task_scalar = update_task.scalar()
             helper_id = task_scalar.helper
             needy_id = task_scalar.needy
 
@@ -203,16 +242,30 @@ class TaskService:
                 ]
             )
 
-        updated_activity = self.user_repo.update_count_reports(
+        task = await self.task_repo.get_task_by_id(
+            task_id=task_id,
             user_id=user_id
         )
-        await self.user_repo.commit()
-        if not updated_activity:
+        if not task:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=[
+                detail= [
                     {
-                        'msg': 'No user with this id'
+                        'msg': 'No task with this id / No access to process'
+                    }
+                ]
+            )
+
+        blacklist_task = await self.blck_task_repo.get_blacklist_task(
+            user_id=user_id,
+            task_id=task_id
+        )
+        if blacklist_task:
+            raise HTTPException(
+                status_code = status.HTTP_409_CONFLICT,
+                detail = [
+                    {
+                        'msg': 'Report has already been processed'
                     }
                 ]
             )
@@ -221,4 +274,16 @@ class TaskService:
             user_id=user_id,
             task_id=task_id
         )
+
+        updated_activity_needy = await self.user_repo.update_count_reports(
+            user_id=task.needy
+        )
+
+        updated_activity_needy_scalar = updated_activity_needy.scalar()
+        if updated_activity_needy_scalar.count_reports % 3 == 0:
+            updated_activity_needy_scalar.rating -= 0.01
+
+        await self.user_repo.commit()
+
+        return {'detail': 'Report successfully processed'}
 

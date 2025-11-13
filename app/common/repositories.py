@@ -9,6 +9,8 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.dialects.postgresql import insert
 
 from .models import BlacklistTask
+from ..users.models import User
+
 
 class BlacklistTaskRepository:
     def __init__(
@@ -25,5 +27,19 @@ class BlacklistTaskRepository:
         await self.postgres.execute(
             insert(BlacklistTask)
             .values(user_id=user_id, task_id=task_id)
+            .options(selectinload(BlacklistTask.user).selectinload(User.activity),
+                     selectinload(BlacklistTask.task))
         )
         await self.postgres.commit()
+
+    async def get_blacklist_task(
+            self,
+            user_id: int,
+            task_id: UUID
+    ):
+        return await self.postgres.scalar(
+            select(BlacklistTask)
+            .where(BlacklistTask.user_id==user_id, BlacklistTask.task_id == task_id)
+            # .options(selectinload(BlacklistTask.user).selectinload(User.activity),
+            #          selectinload(BlacklistTask.task))
+        )

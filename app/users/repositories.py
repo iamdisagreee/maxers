@@ -43,6 +43,42 @@ class UserRepository:
         )
         await self.postgres.commit()
 
+    async def get_all_users_by_role(
+            self,
+            role: str,
+            limit: int,
+    ):
+        return await self.postgres.scalars(
+            select(User)
+            .join(Activity, User.id == Activity.user_id)
+            .where(User.role == role)
+            .options(selectinload(User.activity))
+            .order_by(desc(Activity.rating))
+            .limit(limit)
+        )
+
+    async def get_user_rank_and_data(
+            self,
+            user_id: int,
+            role: str
+    ):
+        rank_window = func.rank().over(
+            order_by=desc(Activity.rating)
+        ).label('place')
+        subquery = (
+            select(Activity.user_id.label('id'), rank_window)
+            .join(User, User.id == Activity.user_id)
+            .where(User.role == role)
+            .subquery()
+        )
+        stmt = (
+            select(User, subquery.c.place)
+            .join(subquery, User.id == subquery.c.id)
+            .where(User.id == user_id)
+            .options(selectinload(User.activity))
+        )
+        return (await self.postgres.execute(stmt)).first()
+
     async def get_user_by_id(
             self,
             user_id: int

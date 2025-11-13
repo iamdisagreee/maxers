@@ -1,8 +1,11 @@
 from datetime import datetime
+from typing import List
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import  Integer, DateTime, String, func, ForeignKey, Float
 from sqlalchemy.sql import text
 
+from ..common import models
 from ..core.postgres import BaseSchema
 
 class User(BaseSchema):
@@ -16,6 +19,7 @@ class User(BaseSchema):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(),  nullable=False)
 
     activity: Mapped['Activity'] = relationship(back_populates='user')
+    blacklist_task: Mapped[List['models.BlacklistTask']] = relationship(back_populates='user')
 
 class Activity(BaseSchema):
     __tablename__ = 'activities'
