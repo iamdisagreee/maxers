@@ -1,0 +1,22 @@
+.task-status__icon{
+    width: 12px;
+    height: 12px;
+}
+
+.task-status{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 7px;
+    gap: 10px;
+    border-radius: 12px;
+}
+
+
+.accent-red-bg{
+    background-color: var(--accent-red);
+}
+
+.gray-bg{
+    background-color: #C4C4C4;
+}
