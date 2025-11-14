@@ -2,10 +2,10 @@ from typing import List, Annotated, Literal
 from uuid import UUID
 from pydantic import Field
 
-from fastapi import APIRouter, UploadFile, File, Depends, Header, HTTPException, Security, status
+from fastapi import APIRouter, UploadFile, File, Depends, Header, HTTPException, Security, status, Path
 from fastapi.responses import JSONResponse
 
-from .schemas import AddTask, TaskResponse, GetTaskResponse, UpdateTask, GetAllTasks
+from .schemas import AddTask, TaskResponse, GetTaskResponse, UpdateTask
 from ..core.dependecies import get_task_service, get_current_user
 from ..users.schemas import GetUserByToken
 
@@ -24,6 +24,7 @@ async def create_add_task(
         category=add_task.category.value,
         name=add_task.name,
         description=add_task.description,
+        city=add_task.city,
         address=add_task.address,
     )
 
@@ -37,6 +38,7 @@ async def create_get_all_tasks(
     """ Получение всех заданий """
     return await task_service.get_all_tasks(
         user_id=current_user.user_id,
+        city=current_user.city,
         type_list=type_list,
         page=page,
     )

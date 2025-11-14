@@ -22,8 +22,9 @@ class Task(BaseSchema):
     category: Mapped[str] = mapped_column(String(50), nullable=False)
     name: Mapped[str] = mapped_column(String(50), nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=False)
+    city: Mapped[str] = mapped_column(String, nullable=False)
     address: Mapped[str] = mapped_column(String, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    finished_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(), nullable=False)
+    finished_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
     blacklist_task: Mapped[List['models.BlacklistTask']] = relationship(back_populates='task')

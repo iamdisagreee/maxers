@@ -22,12 +22,15 @@ class UserRepository:
             user_id: int,
             username: str,
             first_name: str,
+            last_name: str,
             role: str,
-            city: str
+            city: str,
+            url: str
     ):
         await self.postgres.execute(
             insert (User)
-            .values(id=user_id, username=username, first_name=first_name, role=role, city=city)
+            .values(id=user_id, username=username, first_name=first_name,
+                    last_name=last_name, role=role, city=city, url=url)
         )
         await self.postgres.commit()
 

@@ -1,7 +1,8 @@
-from datetime import datetime
+from datetime import datetime, tzinfo
 from resource import RLIMIT_MEMLOCK
 from typing import Optional, Dict, Any
 from uuid import UUID
+from zoneinfo import ZoneInfo
 
 import aiohttp
 from fastapi import UploadFile, HTTPException, status
@@ -30,6 +31,7 @@ class TaskService:
             category: str,
             name: str,
             description: str,
+            city: str,
             address: str,
     ):
         if role == 'Helper':
@@ -64,6 +66,7 @@ class TaskService:
             category=category,
             name=name,
             description=description,
+            city=city,
             address=address,
         )
 
@@ -72,6 +75,7 @@ class TaskService:
     async def get_all_tasks(
             self,
             user_id: int,
+            city: str,
             type_list: str,
             page: int
     ):
@@ -87,7 +91,8 @@ class TaskService:
             all_tasks = await self.task_repo.get_all_tasks_by_status(
                 status=type_list.capitalize(),
                 limit=limit,
-                offset=offset
+                offset=offset,
+                city=city,
             )
 
         return all_tasks
@@ -111,7 +116,11 @@ class TaskService:
                     }
                 ]
             )
+        print(datetime.fromisoformat(str(task.created_at.replace(tzinfo=ZoneInfo('Europe/Moscow')))))
         # print(task.created_at)
+        # print(datetime.now(tz=ZoneInfo('Europe/Moscow')))
+        # task.created_at=task.created_at.replace(tzinfo=ZoneInfo('Europe/Moscow'))
+
         return task
 
     async def update_task(

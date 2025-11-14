@@ -24,15 +24,16 @@ class AddTask(CamelCaseModel):
     category: CategoryEnum
     name: str
     description: str
+    city: str
     address: str
 
-    @field_validator('name', mode='after')
+    @field_validator('city', 'name', mode='after')
     @classmethod
     def capitalize_string_fields(cls, value: str) -> str:
         return value.capitalize()
 
-class GetAllTasks(CamelCaseModel):
-    page: Annotated[int, Field(gt=0)]
+# class GetAllTasks(CamelCaseModel):
+#     page: Annotated[int, Field(gt=0)] = 1
 
 class GetTaskResponse(CamelCaseModel):
     id: UUID
@@ -43,6 +44,7 @@ class GetTaskResponse(CamelCaseModel):
     category: CategoryEnum
     name: str
     description: str
+    city: str
     address: str
     created_at: datetime
     finished_at: Optional[datetime]

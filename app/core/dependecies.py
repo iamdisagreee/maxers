@@ -72,11 +72,12 @@ async def get_current_user(
         payload = jwt.decode(token, settings.jwt_secret_key, algorithms=[settings.jwt_algorithm])
         user_id = int(payload.get('sub'))
         role = payload.get('role')
+        city = payload.get('city')
     except jwt.PyJWTError:
         raise credentials_exception
 
     user = await user_repo.get_user_by_id(user_id=user_id)
     if user is None:
         raise credentials_exception
-    return GetUserByToken.model_validate({'user_id':user_id, 'role':role})
+    return GetUserByToken.model_validate({'user_id':user_id, 'role':role, 'city': city})
 

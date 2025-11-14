@@ -26,11 +26,13 @@ class TaskRepository:
             category: str,
             name: str,
             description: str,
+            city: str,
             address: str,
     ):
         await self.postgres.execute(
             insert(Task)
-            .values(needy=needy, points=points, category=category, name=name, description=description, address=address)
+            .values(needy=needy, points=points, category=category,
+                    name=name, description=description, city=city,  address=address)
         )
         await self.postgres.commit()
 
@@ -60,13 +62,15 @@ class TaskRepository:
     async def get_all_tasks_by_status(
             self,
             status: str,
+            city: str,
             limit: int,
             offset: int
     ):
         return await self.postgres.scalars(
             select(Task)
             .where(
-                Task.status == status
+                Task.status == status,
+                Task.city == city
             )
             .limit(limit)
             .offset(offset)

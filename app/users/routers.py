@@ -17,8 +17,10 @@ async def create_add_user(
         user_id=add_user.user_id,
         username=add_user.username,
         first_name=add_user.first_name,
+        last_name=add_user.last_name,
         role=add_user.role.value,
-        city=add_user.city
+        city=add_user.city,
+        url=add_user.url
     )
 
 @router.get('/list')#, response_model=List[GetUserResponse])

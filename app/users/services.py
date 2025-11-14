@@ -5,6 +5,7 @@ import aiohttp
 import secrets
 from fastapi import UploadFile, HTTPException, status
 from fastapi.responses import JSONResponse
+from langdetect import detect
 
 from .repositories import UserRepository
 from .schemas import GetUserResponse
@@ -38,9 +39,12 @@ class UserService:
             user_id: int,
             username: str,
             first_name: str,
+            last_name: str,
             role: str,
-            city: str
+            city: str,
+            url: str
     ):
+
         if not await self.check_city(city=city):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -67,8 +71,10 @@ class UserService:
             user_id=user_id,
             username=username,
             first_name=first_name,
+            last_name=last_name,
             role=role,
-            city=city
+            city=city,
+            url=url
         )
 
         base_rating = 0 if role == 'Helper' else 5
@@ -79,7 +85,7 @@ class UserService:
         )
 
         access_token = self.create_access_token(
-            {'sub': str(user_id), 'role': role}
+            {'sub': str(user_id), 'role': role, 'city': city}
         )
 
         return {
@@ -135,7 +141,6 @@ class UserService:
                     }
                 ]
             )
-        print(user.activity.count_reports)
         return user
 
     async def update_user(

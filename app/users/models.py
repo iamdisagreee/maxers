@@ -14,9 +14,11 @@ class User(BaseSchema):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     username: Mapped[str] = mapped_column(String(50), nullable=False)
     first_name: Mapped[str] = mapped_column(String(50), nullable=False)
+    last_name: Mapped[str] = mapped_column(String(50), nullable=False)
     role: Mapped[str] = mapped_column(String(50), nullable=False)
     city: Mapped[str] = mapped_column(String(50), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(),  nullable=False)
+    url: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(),  nullable=False)
 
     activity: Mapped['Activity'] = relationship(back_populates='user')
     blacklist_task: Mapped[List['models.BlacklistTask']] = relationship(back_populates='user')

@@ -1,7 +1,9 @@
 import math
-from typing import Literal, List
+from typing import Literal, List, Optional, Any
 from datetime import datetime
 from enum import Enum
+from zoneinfo import ZoneInfo
+
 from pydantic import BaseModel, ConfigDict, alias_generators, Field, EmailStr, computed_field, field_validator
 
 from ..common.schema_base import CamelCaseModel
@@ -15,14 +17,15 @@ class AddUser(CamelCaseModel):
     user_id: int
     username: str
     first_name: str
+    last_name: str
     role: RoleEnum
-    city: str
+    city: Optional[str]
+    url: str
 
     @field_validator('username', 'first_name', 'city', mode='after')
     @classmethod
-    def capitalize_string_fields(cls, value: str) -> str:
+    def capitalize_string_fields(cls, value: str) -> Any:
         return value.capitalize()
-
 
 class AddUserResponse(CamelCaseModel):
     detail: str
@@ -31,6 +34,7 @@ class AddUserResponse(CamelCaseModel):
 class GetUserByToken(CamelCaseModel):
     user_id: int
     role: str
+    city: str
 
 class GetActivityResponse(CamelCaseModel):
     rating: float
@@ -47,10 +51,17 @@ class GetUserResponse(CamelCaseModel):
     user_id: int = Field(alias="id")
     username: str
     first_name: str
+    last_name: str
     role: str
     city: str
+    url: str
     created_at: datetime
     activity: GetActivityResponse
+
+    # @field_validator('created_at', mode='after')
+    # @classmethod
+    # def create_timezone_fields(cls, value: datetime) -> datetime:
+    #     return value.replace(tzinfo=ZoneInfo('Europe/Moscow'))
 
 class GetCurrentUser(GetUserResponse):
     place: int
