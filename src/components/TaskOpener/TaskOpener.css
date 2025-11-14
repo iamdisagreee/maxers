@@ -18,7 +18,7 @@
   position: fixed;
   left: 50%;
   bottom: 0;
-  height: 90vh; /* можно менять */
+  height: 92vh; /* можно менять */
   width: 390px;
   background: #fff;
   border-radius: 25px;
@@ -82,7 +82,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 30px;
+  margin-top: 25px;
 }
 
 .user-info-personal{
@@ -142,4 +142,69 @@
 
 .sheet-bottom{
   display: flex;
+}
+
+.sheet-reward-points-text{
+  color: #A8D8B9;
+}
+
+.sheet-reward-points{
+  border: 2px solid #A8D8B9;
+  background-color: #E8F5E9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: fit-content;
+  border-radius: 14px;
+  padding: 2px 4px;
+  margin-top: 5px;
+}
+
+.user-info-accepted .user-info__text{
+  color: #fff;
+}
+
+.user-info-accepted{
+  background-image: linear-gradient(90deg, #2D65FE, #7434E4);
+  padding: 8px;
+  border-radius: 25px;
+}
+
+.user-info-accepted__text{
+  display: none;
+}
+
+.user-info-accepted .task-category{
+  display: none !important;
+}
+
+.user-info-accepted .user-info-accepted__text{
+  display: block;
+  padding-right: 10px;
+}
+
+.sheet-bottom{
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet-bottom-sbutton{
+  margin-top: 15px;
+  text-align: center;
+}
+
+.task-processing{
+  background-color: #A8D8B9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+  gap: 10px;
+  border-radius: 18px;
+}
+
+.task-processing-svg{
+  width: 24px;
+  height: 24px;
 }

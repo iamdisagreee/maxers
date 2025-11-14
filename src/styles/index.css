@@ -119,6 +119,10 @@ html{
   background-color: var(--secondary);
 }
 
+.accent-red{
+  color: var(--accent-red);
+}
+
 .h1 {
   font-size: 2rem;    /* 32px */
   line-height: 2.4rem;
@@ -169,4 +173,22 @@ html{
 
 .btn-secondary{
   background-color: var(--dsecondary);
+}
+
+.gray-button{
+    border: 1px solid #7E828C;
+    background-color: #C4C4C433;
+    color: #7E828C;
+}
+
+.gradient-primary-button{
+    color: var(--dprimary);
+    background-color: #e6ebf6;
+    border: 2px solid #8EA9E8;
+}
+
+.red-button{
+    border: 1px solid var(--accent-red);
+    background-color: #F5E9E8;
+    color: var(--accent-red);
 }

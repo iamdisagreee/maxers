@@ -50,6 +50,13 @@
     min-height: 44px;
 }
 
+.button-size-fw{
+    width: 100%;
+    font-size: 16px;
+    max-width: 390px;
+    min-height: 44px;
+}
+
 /* Mode - Primary */
 .button-mode-primary {
     background: var(--primary);

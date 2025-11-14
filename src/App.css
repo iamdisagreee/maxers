@@ -14,5 +14,11 @@ body{
     var(--fwhite) 25%,   /* левый край */
     var(--backcolor),  /* центр */
     var(--fwhite) 75%  /* правый край */
-);
+  );
+}
+
+@media (max-width: 400px) {
+  .app-container {
+    width: 90vw;
+  }
 }
