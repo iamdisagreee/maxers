@@ -6,7 +6,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - max_app_data:/app/data
+      - max_app_data:/app/src/data
     depends_on:
       max_pg:
         condition: service_started

@@ -6,7 +6,7 @@ from sqlalchemy import delete, select, update, desc, asc, func
 from sqlalchemy.orm import selectinload
 from sqlalchemy.dialects.postgresql import insert
 
-from app.users.models import User, Activity
+from .models import User, Activity
 
 
 class UserRepository:

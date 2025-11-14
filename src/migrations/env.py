@@ -20,14 +20,14 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from app.users.models import User, Activity
-from app.tasks.models import Task
-from app.common.models import BlacklistTask
-from app.core.postgres import BaseSchema
+from src.users.models import User, Activity
+from src.tasks.models import Task
+from src.common.models import BlacklistTask
+from src.core.postgres import BaseSchema
 
 target_metadata = BaseSchema.metadata
 
-from app.config import get_settings
+from src.config import get_settings
 settings = get_settings()
 config.set_main_option(
     "sqlalchemy.url",
