@@ -1,14 +1,28 @@
 services:
+
+  max_app_service:
+    build: .
+    ports:
+      - 8001:8000
+    env_file:
+      - ./.env
+    volumes:
+      - max_app_data:/app/data
+    depends_on:
+      max_pg:
+        condition: service_started
+
   max_pg:
     image: postgres:latest
     env_file:
       - ./.env
     container_name: max_pg_pg
     volumes:
-      - max_pg_data:/var/lib/postgresql/data
+      - max_pg_data:/var/lib/postgresql
     ports:
-      - 5432:5432
+      - 5433:5432
     restart: on-failure
 
 volumes:
+  max_app_data:
   max_pg_data:

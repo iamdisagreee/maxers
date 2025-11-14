@@ -31,7 +31,7 @@ async def create_add_task(
 @router.get('/list/{page}', response_model=List[GetTaskResponse])
 async def create_get_all_tasks(
         page: Annotated[int, Field(gt=0)],
-        type_list: Literal['user', 'pending', 'process', 'cancelled', 'completed'],
+        type_list: Literal['user', 'pending'],
         task_service=Depends(get_task_service),
         current_user: GetUserByToken = Depends(get_current_user)
 ):
