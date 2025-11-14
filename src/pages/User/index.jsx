@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import accessibilityIcon from '../../assets/svg/accessibility.svg';
 import handIcon from '../../assets/svg/hand.svg';
@@ -10,8 +10,30 @@ import repair2Icon from '../../assets/svg/repair2.svg';
 import tenIcon from '../../assets/svg/10.svg';
 import './User.css'
 
-export default function User() {
-  const { id } = useParams() // получаем параметр из URL
+export default function User({ profile, role, token }) {
+  const { id } = useParams(); // id пользователя из URL
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    // например, загрузка данных пользователя через API
+    const fetchUser = async () => {
+      try {
+        console.log('Token для запросов:', token);
+        console.log('Текущий профиль:', profile);
+        console.log('Роль:', role);
+        console.log('ID из URL:', id);
+
+        // тут можно вызвать API, например:
+        // const data = await getUser(id);
+        // setUserData(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchUser();
+  }, [id, profile, role, token]);
+
 
   return (
     <div className='user'>

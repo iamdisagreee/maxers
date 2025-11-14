@@ -1,10 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import TaskCategory from "../TaskCategory"
-import mapPin from '../../assets/svg/map-pin.svg'
-import mapPinRed from '../../assets/svg/map-pin-red.svg'
-import mapPhoto from '../../assets/photos/map.png'
-import Button from "../Button"
-import settingsIcon from '../../assets/svg/settings.svg'
 import "./TaskOpener.css";
 
 export default function TaskOpener({ isOpen, onClose, children, maxHeight = 600 }) {
@@ -129,6 +123,7 @@ export default function TaskOpener({ isOpen, onClose, children, maxHeight = 600 
       >
         <div className="sheet-handle" />
         <div className="sheet-content">
+          {children}
         </div>
       </div>
     </>

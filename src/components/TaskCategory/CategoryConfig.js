@@ -6,12 +6,12 @@ import otherIcon from '../../assets/svg/other.svg'
 import chatIcon from '../../assets/svg/chat.svg'
 
 const CATEGORY_MAP = {
-  pill: { text: 'Медикаменты', icon: pillIcon },
-  repair: { text: 'Мелкий ремонт', icon: repairIcon },
-  gadgets: { text: 'Помощь с техникой', icon: gadgetsIcon },
-  dumbell: { text: 'Физическая помощь', icon: dumbellIcon },
-  other: { text: 'Разное', icon: otherIcon },
-  chat: { text: 'Общение и компания', icon: chatIcon },
+  Medicine: { text: 'Медикаменты', icon: pillIcon },
+  Repairs: { text: 'Мелкий ремонт', icon: repairIcon },
+  Technique: { text: 'Помощь с техникой', icon: gadgetsIcon },
+  Physical: { text: 'Физическая помощь', icon: dumbellIcon },
+  Different: { text: 'Разное', icon: otherIcon },
+  Communication: { text: 'Общение и компания', icon: chatIcon },
 }
 
 export default CATEGORY_MAP

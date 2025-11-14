@@ -20,8 +20,26 @@
     position: fixed;
     left: calc(50% + 140px);
     transform: translate(-50%, -50%);
-    bottom: 100px;
+    bottom: 90px;
     z-index: 1000;
+    cursor: pointer;
+}
+
+.tasks-empty{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding-top: 30px;
+}
+
+.tasks-empty-svg{
+    width: 48px;
+}
+
+.tasks-empty-text{
+    color: #7E828C;
+    text-align: center;
 }
 
 @media (max-width: 400px) {

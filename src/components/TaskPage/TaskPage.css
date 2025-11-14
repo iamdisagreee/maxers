@@ -108,3 +108,7 @@
   width: 24px;
   height: 24px;
 }
+
+.sheet-back-btn{
+  cursor: pointer;
+}
