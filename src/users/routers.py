@@ -23,7 +23,7 @@ async def create_add_user(
         url=add_user.url
     )
 
-@router.get('/list')#, response_model=List[GetUserResponse])
+@router.get('/')#, response_model=List[GetUserResponse])
 async def create_get_all_users(
         user_service = Depends(get_user_service),
         current_user: GetUserByToken = Depends(get_current_user)
@@ -33,13 +33,14 @@ async def create_get_all_users(
         role=current_user.role
     )
 
-@router.get('/', response_model=GetUserResponse)
+@router.get('/{user_id}', response_model=GetUserResponse)
 async def create_get_user(
+        user_id: int,
         user_service = Depends(get_user_service),
         current_user: GetUserByToken = Depends(get_current_user)
 ):
     """ Получение данных о пользователе """
-    return await user_service.get_user(user_id=current_user.user_id)
+    return await user_service.get_user(user_id=user_id)
 
 @router.patch('/', response_model=UpdateUserResponse)
 async def create_update_user(
