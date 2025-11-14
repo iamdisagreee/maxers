@@ -1,9 +1,8 @@
 services:
-
   max_app_service:
     build: .
     ports:
-      - 8001:8000
+      - 8080:8000
     env_file:
       - ./.env
     volumes:
@@ -16,7 +15,6 @@ services:
     image: postgres:latest
     env_file:
       - ./.env
-    container_name: max_pg_pg
     volumes:
       - max_pg_data:/var/lib/postgresql
     ports:

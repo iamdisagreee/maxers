@@ -37,13 +37,32 @@ class UserService:
     async def add_user(
             self,
             user_id: int,
-            username: str,
-            first_name: str,
-            last_name: str,
-            role: str,
-            city: str,
-            url: str
+            username: str | None,
+            first_name: str | None,
+            last_name: str | None,
+            role: str | None,
+            city: str | None,
+            url: str | None
     ):
+
+        user = await self.user_repo.get_user_by_id(user_id=user_id)
+
+        if user:
+            # raise HTTPException(
+            #     status_code=status.HTTP_400_BAD_REQUEST,
+            #     detail=[
+            #         {
+            #             'msg': 'User already registered'
+            #         }
+            #     ]
+            # )
+            access_token = self.create_access_token(
+                {'sub': str(user_id), 'role': role, 'city': city}
+            )
+            return {
+                'detail': 'User again successfully created',
+                'access_token': access_token
+            }
 
         if not await self.check_city(city=city):
             raise HTTPException(
@@ -51,18 +70,6 @@ class UserService:
                 detail=[
                     {
                         'msg': 'No city with this name found'
-                    }
-                ]
-            )
-
-        user = await self.user_repo.get_user_by_id(user_id=user_id)
-
-        if user:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=[
-                    {
-                        'msg': 'User already registered'
                     }
                 ]
             )

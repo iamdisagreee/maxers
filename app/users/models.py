@@ -12,12 +12,12 @@ class User(BaseSchema):
     __tablename__ = 'users'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    username: Mapped[str] = mapped_column(String(50), nullable=False)
-    first_name: Mapped[str] = mapped_column(String(50), nullable=False)
-    last_name: Mapped[str] = mapped_column(String(50), nullable=False)
-    role: Mapped[str] = mapped_column(String(50), nullable=False)
-    city: Mapped[str] = mapped_column(String(50), nullable=False)
-    url: Mapped[str] = mapped_column(String, nullable=False)
+    username: Mapped[str] = mapped_column(String(50), nullable=True)
+    first_name: Mapped[str] = mapped_column(String(50), nullable=True)
+    last_name: Mapped[str] = mapped_column(String(50), nullable=True)
+    role: Mapped[str] = mapped_column(String(50), nullable=True)
+    city: Mapped[str] = mapped_column(String(50), nullable=True)
+    url: Mapped[str] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(),  nullable=False)
 
     activity: Mapped['Activity'] = relationship(back_populates='user')

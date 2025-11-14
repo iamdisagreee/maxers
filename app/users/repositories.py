@@ -20,12 +20,12 @@ class UserRepository:
     async def add_user(
             self,
             user_id: int,
-            username: str,
-            first_name: str,
-            last_name: str,
-            role: str,
-            city: str,
-            url: str
+            username: str | None,
+            first_name: str | None,
+            last_name: str | None,
+            role: str | None,
+            city: str | None,
+            url: str | None
     ):
         await self.postgres.execute(
             insert (User)

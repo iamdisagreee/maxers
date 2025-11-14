@@ -15,12 +15,12 @@ class RoleEnum(Enum):
 
 class AddUser(CamelCaseModel):
     user_id: int
-    username: str
-    first_name: str
-    last_name: str
+    username: Optional[str]
+    first_name: Optional[str]
+    last_name: Optional[str]
     role: RoleEnum
     city: Optional[str]
-    url: str
+    url: Optional[str]
 
     @field_validator('username', 'first_name', 'city', mode='after')
     @classmethod
