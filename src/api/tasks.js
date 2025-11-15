@@ -57,15 +57,20 @@ export const updateTask = async (taskId, taskData, token) => {
 };
 
 /**
- * Создание отчёта по задаче
+ * Жалоба по задаче
  * @param {string} taskId
- * @param {object} reportData
+//  * @param {object} reportData
  * @param {string} token
  * @returns {Promise<{detail: string}>}
  */
-export const createTaskReport = async (taskId, reportData, token) => {
-  const response = await axios.post(`${DEFAULT_API_URL}/api/v1/tasks/${taskId}/reports`, reportData, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
+export const createTaskReport = async (taskId, token) => {
+  // если нужно отправлять тело — добавь его вместо null
+  const response = await axios.post(
+    `${DEFAULT_API_URL}/api/v1/tasks/${taskId}/reports`,
+    null,
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
   return response.data;
 };

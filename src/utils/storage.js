@@ -58,10 +58,6 @@ function isDeviceStorageSupported() {
     if (!wa || !wa.version) return false;
     
     const version = parseFloat(wa.version);
-    if (version < 6.9) {
-      console.log(`DeviceStorage requires WebApp API 6.9+, current: ${version}`);
-      return false;
-    }
     
     if (!wa.DeviceStorage || typeof wa.DeviceStorage.getItem !== 'function') {
       console.log('DeviceStorage API not available');
@@ -187,10 +183,6 @@ function isSecureStorageSupported() {
     if (!wa || !wa.version) return false;
     
     const version = parseFloat(wa.version);
-    if (version < 6.9) {
-      console.log(`SecureStorage requires WebApp API 6.9+, current: ${version}`);
-      return false;
-    }
     
     if (!wa.SecureStorage || typeof wa.SecureStorage.getItem !== 'function') {
       console.log('SecureStorage API not available');

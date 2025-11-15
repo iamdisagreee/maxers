@@ -7,11 +7,12 @@ import mapPhoto from '../../assets/photos/map.png'
 import Button from "../Button"
 import settingsIcon from '../../assets/svg/settings.svg'
 import { useTaskOpener } from '../../contexts/TaskOpenerContext'
-import { getTask } from '../../api/tasks'
+import { getTask, updateTask } from '../../api/tasks'
 import { getUser } from '../../api/users'
 import { Storage } from '../../utils/storage'
 import CardPageStatus from '../CardPageStatus'
 import ModalList from '../ModalList'
+import ModalFeedback from '../ModalFeedback'
 
 export default function TaskPage({ taskId = null, initialTask = null }) {
   const { close } = useTaskOpener()
@@ -20,9 +21,11 @@ export default function TaskPage({ taskId = null, initialTask = null }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [myProfile, setMyProfile] = useState(null)
+  const [actionLoading, setActionLoading] = useState(false)
   
   // Модальные окна
   const [modalType, setModalType] = useState(null)
+  const [showFeedback, setShowFeedback] = useState(false)
 
   // contactUser — данные «чужого» участника (helper или needy), если он есть и не равен моему id
   const [contactUser, setContactUser] = useState(null)
@@ -132,7 +135,7 @@ export default function TaskPage({ taskId = null, initialTask = null }) {
       const lastName = user?.lastName ?? user?.last_name ?? ''
       const avatar = user
         ? (user.photo_url || user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent((firstName || user.username || 'User'))}`)
-        : 'https://via.placeholder.com/48?text=U'
+        : 'https://ui-avatars.com/api/?name=user'
 
       // Сохраняем контакт (расширяем полями avatars/firstName/lastName для удобства)
       setContactUser({
@@ -189,9 +192,10 @@ export default function TaskPage({ taskId = null, initialTask = null }) {
 
   // Определяем, показывать ли блок с контактом
   // 1. Если я needy и нет helper - не показываем
-  // 2. Если я helper и просматриваю задание - показываем needy
-  // 3. Если есть и needy и helper - показываем друг другу
-  const shouldShowContact = isMyTask ? hasHelper : true
+  // 2. Если я helper и просматриваю задание - показываем needy (даже если я не принял)
+  // 3. Если есть и needy и helper - показываем друг другу (только участникам)
+  const isParticipant = isMyTask || isHelperInTask
+  const shouldShowContact = isParticipant ? (hasHelper && contactUser) : (!isMyTask && contactUser)
 
   // Determine displayed user info: prefer contactUser (other person), otherwise show task's needy placeholders
   const displayAvatar = contactUser ? contactUser.avatar : (task?.needyAvatar || "https://sun9-67.userapi.com/s/v1/ig2/CY_xDesKnMtl0OiJynK0oc7QnxQVJUgeciJSi_MpZUiE3EHSCNltr76jugXaygGd2Xh0M8-61v7Jwfl1kO87YWVe.jpg")
@@ -207,8 +211,35 @@ export default function TaskPage({ taskId = null, initialTask = null }) {
   // Показывать награду только для хелперов
   const shouldShowReward = isHelper
 
-  // Показывать статус только для нуждающихся
-  const shouldShowStatus = isNeedy && isMyTask
+  // Показывать статус только для нуждающихся, которые создали задание
+  const shouldShowStatus = isMyTask
+
+  // Определяем текст и действие главной кнопки
+  let mainButtonText = 'ПРИНЯТЬ ЗАДАНИЕ'
+  let mainButtonAction = 'accept'
+  let showMainButton = false
+  let mainButtonDisabled = false
+
+console.warn(`is mine ${isMyTask} | status ${status} | ${isHelperInTask}`)
+
+  if (isHelper && !hasHelper && status !== 'Completed' && status !== 'Cancelled') {
+    // Хелпер может принять задание, если helper пустой и задание активно
+    mainButtonText = 'ПРИНЯТЬ ЗАДАНИЕ'
+    mainButtonAction = 'accept'
+    showMainButton = true
+  } else if (isHelperInTask && status === 'Process') {
+    // Хелпер в задании может завершить
+    mainButtonText = 'ЗАВЕРШИТЬ ЗАДАНИЕ'
+    mainButtonAction = 'complete'
+    showMainButton = true
+  } else if (isMyTask && (status === 'Process' || status === 'Pending')) {
+    // Needy видит кнопку завершения
+    mainButtonText = 'ПРОСЬБА ВЫПОЛНЕНА'
+    mainButtonAction = 'complete'
+    showMainButton = true
+    // Disabled если нет helper
+    mainButtonDisabled = !hasHelper
+  }
 
   // Обработчики модальных окон
   const openModal = (type) => {
@@ -217,6 +248,65 @@ export default function TaskPage({ taskId = null, initialTask = null }) {
 
   const closeModal = () => {
     setModalType(null)
+  }
+
+  const closeFeedback = () => {
+    setShowFeedback(false)
+  }
+
+  // Обработчик главной кнопки
+  const handleMainButtonClick = async () => {
+    if (!taskId || actionLoading) return
+
+    setActionLoading(true)
+    try {
+      const token = await Storage.getToken()
+      if (!token) {
+        throw new Error('Токен авторизации не найден')
+      }
+
+      let taskData = {}
+
+      if (mainButtonAction === 'accept') {
+        // Принять задание
+        taskData = {
+          status: 'Process',
+          helper: myId,
+          rating: {
+            taskPoints: null,
+            reviewPoints: null,
+            reasonReject: null
+          }
+        }
+      } else if (mainButtonAction === 'complete') {
+        // Завершить задание
+        taskData = {
+          status: 'Completed',
+          helper: null,
+          rating: {
+            taskPoints: 5,
+            reviewPoints: 1,
+            reasonReject: 'Plans'
+          }
+        }
+      }
+
+      const updatedTask = await updateTask(taskId, taskData, token)
+      
+      // Обновляем задачу локально
+      setTask({ ...task, ...taskData })
+
+      // Если завершили задание - показываем модалку фидбека
+      if (mainButtonAction === 'complete') {
+        setShowFeedback(true)
+      }
+
+    } catch (err) {
+      console.error('Error updating task:', err)
+      alert(err?.response?.data?.detail || err?.message || 'Ошибка при обновлении задачи')
+    } finally {
+      setActionLoading(false)
+    }
   }
 
   return (
@@ -240,8 +330,13 @@ export default function TaskPage({ taskId = null, initialTask = null }) {
           <div className="sheet-error p inter-500" role="alert" style={{ color: 'var(--danger,#c33)' }}>{error}</div>
         ) : (
           <>
-            {shouldShowContact && contactUser && (
-              <a href={profileUrl || '#'} target="_blank" rel="noreferrer" className={`sheet-task__user-info ${hasHelper ? 'user-info-accepted' : ''}`}>
+            {shouldShowContact && (
+              <a 
+                href={hasHelper ? profileUrl : '#'} 
+                target="_blank" 
+                rel="noreferrer" 
+                className={`sheet-task__user-info ${hasHelper ? 'user-info-accepted' : ''}`}
+              >
                 <div className="user-info-personal">
                   <img
                     className="user-info__avatar"
@@ -253,11 +348,9 @@ export default function TaskPage({ taskId = null, initialTask = null }) {
 
                 <TaskCategory className="user-info__status" type={categoryType} />
 
-                {hasHelper && (
-                  <div className="user-info-accepted__text h5 inter-700 color-white">
-                    Написать
-                  </div>
-                )}
+                <div className="user-info-accepted__text h5 inter-700 color-white">
+                  Написать
+                </div>
               </a>
             )}
 
@@ -305,7 +398,16 @@ export default function TaskPage({ taskId = null, initialTask = null }) {
             )}
 
             <div className="sheet-bottom">
-              <Button appearance="dsecondary" size="fw">ПРИНЯТЬ ЗАДАНИЕ</Button>
+              {showMainButton && (
+                <Button 
+                  appearance="dsecondary" 
+                  size="fw"
+                  onClick={handleMainButtonClick}
+                  disabled={actionLoading || mainButtonDisabled}
+                >
+                  {actionLoading ? 'Загрузка...' : mainButtonText}
+                </Button>
+              )}
               <div className="sheet-bottom-sbutton">
                 {canDecline && (
                   <div 
@@ -343,7 +445,15 @@ export default function TaskPage({ taskId = null, initialTask = null }) {
       {modalType && (
         <ModalList 
           type={modalType} 
+          taskId={taskId}
           onClose={closeModal}
+        />
+      )}
+
+      {showFeedback && (
+        <ModalFeedback 
+          taskId={taskId}
+          onClose={closeFeedback}
         />
       )}
     </div>

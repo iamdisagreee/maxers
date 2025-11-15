@@ -105,7 +105,7 @@ export default function TaskCard({ task, type = 'Helper' }) {
 
   const needyAvatar = needyUser
     ? (needyUser.photo_url || needyUser.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent((needyUser.firstName || needyUser.username || 'User'))}`)
-    : (task.needy_photo || 'https://via.placeholder.com/48?text=U');
+    : (task.needy_photo || 'https://ui-avatars.com/api/?name=user');
 
   return (
     <div className={`task-card ${isHelperView ? 'helper' : 'needy'}`} onClick={handleClick} role="button" tabIndex={0}>
