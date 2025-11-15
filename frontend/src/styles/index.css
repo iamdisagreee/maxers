@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* * {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Прозрачное выделение при попытке выделить */
+::selection {
+    background-color: rgba(0, 123, 255, 0.1);
+    color: inherit;
+}
+
+::-moz-selection {
+    background-color: rgba(0, 123, 255, 0.1);
+    color: inherit;
+} */
+
+/* Запрет перетаскивания изображений */
+img {
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+}
+
+/* Для полей ввода оставляем возможность выделения */
+/* input, textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+} */
+
+.app-container{
+  background-color: #F7F8FA;
+}
+
+html{
+  font-size: 16px;
+  overflow-x: hidden; 
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  color: var(--fblack);
+}
+
+
+.app-container {
+  overflow-y: auto; /* или scroll */
+  scrollbar-width: thin; /* для Firefox */
+  scrollbar-color: #00000080 #00000080; /* для Firefox */
+}
+
+.app-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.app-container::-webkit-scrollbar-track {
+  background: #00000080;
+}
+
+.app-container::-webkit-scrollbar-thumb {
+  background: #00000080;
+  border-radius: 4px;
+}
+
+/* Firefox */
+/* html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--fblack) var(--fblack);
+} */
+
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--fblack);
+  height: 56px;
+  width: 100vw;
+  max-width: 390px;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9000;
+}
+
+.inter-100 { font-family: "Inter", sans-serif; font-weight: 100; font-style: normal; font-optical-sizing: auto; }
+.inter-200 { font-family: "Inter", sans-serif; font-weight: 200; font-style: normal; font-optical-sizing: auto; }
+.inter-300 { font-family: "Inter", sans-serif; font-weight: 300; font-style: normal; font-optical-sizing: auto; }
+.inter-400 { font-family: "Inter", sans-serif; font-weight: 400; font-style: normal; font-optical-sizing: auto; }
+.inter-500 { font-family: "Inter", sans-serif; font-weight: 500; font-style: normal; font-optical-sizing: auto; }
+.inter-600 { font-family: "Inter", sans-serif; font-weight: 600; font-style: normal; font-optical-sizing: auto; }
+.inter-700 { font-family: "Inter", sans-serif; font-weight: 700; font-style: normal; font-optical-sizing: auto; }
+.inter-800 { font-family: "Inter", sans-serif; font-weight: 800; font-style: normal; font-optical-sizing: auto; }
+.inter-900 { font-family: "Inter", sans-serif; font-weight: 900; font-style: normal; font-optical-sizing: auto; }
+
+.color-white{
+  color: var(--fwhite);
+}
+
+.gradient-primary {
+  background: linear-gradient(45deg, var(--dprimary), var(--lprimary));
+  -webkit-background-clip: text;  /* обрезает фон по тексту */
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* делает текст прозрачным, чтобы видеть фон */
+}
+
+.gradient-primary-bg {
+  background: linear-gradient(45deg, var(--dprimary), var(--lprimary));
+}
+
+.primary-bg{
+  background-color: var(--primary);
+}
+
+.secondary-bg{
+  background-color: var(--secondary);
+}
+
+.accent-red{
+  color: var(--accent-red);
+}
+
+.h1 {
+  font-size: 2rem;    /* 32px */
+  line-height: 2.4rem;
+}
+
+.h2 {
+  font-size: 1.75rem; /* 28px */
+  line-height: 2.1rem;
+}
+
+.h3 {
+  font-size: 1.5rem;  /* 24px */
+  line-height: 1.8rem;
+}
+
+.h4 {
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.5rem;
+}
+
+.h5 {
+  font-size: 1rem;    /* 16px */
+  line-height: 1.4rem;
+}
+
+.h6 {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.2rem;
+}
+
+/* Параграфы и span */
+.p {
+  font-size: 0.75rem;   /* 12px */
+  line-height: 1rem;
+}
+
+.span {
+  font-size: 0.875rem;  /* 14px */
+  line-height: 1rem;
+}
+
+.content-wrapper{
+  margin: 0 auto;
+  width: 86%;
+  padding-top: 70px;
+  padding-bottom: 100px;
+}
+
+.btn-secondary{
+  background-color: var(--dsecondary);
+}
+
+.gray-button{
+    border: 1px solid #7E828C;
+    background-color: #C4C4C433;
+    color: #7E828C;
+}
+
+.gradient-primary-button{
+    color: var(--dprimary);
+    background-color: #e6ebf6;
+    border: 2px solid #8EA9E8;
+}
+
+.red-button{
+    border: 1px solid var(--accent-red);
+    background-color: #F5E9E8;
+    color: var(--accent-red);
+}
