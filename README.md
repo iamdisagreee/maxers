@@ -211,7 +211,7 @@
    ```bash
    cd maxers/
    ```
-2. Создайте .env в папках backend/, bot/, frontend/ на основе .env.example
+2. Создайте .env в директориях backend/, bot/, frontend/ на основе .env.example
    
 3. Запустите docker-compose.yml
 
