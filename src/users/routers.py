@@ -23,7 +23,7 @@ async def create_add_user(
         url=add_user.url
     )
 
-@router.get('/')#, response_model=List[GetUserResponse])
+@router.get('/list')
 async def create_get_all_users(
         user_service = Depends(get_user_service),
         current_user: GetUserByToken = Depends(get_current_user)

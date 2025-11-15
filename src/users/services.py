@@ -115,6 +115,7 @@ class UserService:
                 ]
             )
         limit = 5
+
         all_users = await self.user_repo.get_all_users_by_role(
             role=role,
             limit=limit
