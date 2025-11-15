@@ -163,8 +163,8 @@ class TaskService:
                     raise forbidden_helper
                 to_update.update({'helper': None, 'finished_at': None})
             case 'Process':
-                if role == 'Helper':
-                    raise forbidden_helper
+                # if role == 'Helper':
+                #     raise forbidden_helper
                 to_update.update({'helper': helper, 'finished_at': None})
                 is_user_helper = await self.user_repo.get_user_by_id_user_helper(
                     user_id=helper
