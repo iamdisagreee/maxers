@@ -1,0 +1,56 @@
+.start-text{
+    margin-top: 10px;
+    text-align: center;
+}
+
+.startpage-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 844px;
+}
+
+.logo-svg{
+    width: 24px;
+    height: 24px;
+}
+
+.start-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 25px 20px 25px 25px;
+    border-radius: 25px;
+    text-align: center;
+}
+
+.start-card .p{
+    opacity: 0.8;
+}
+
+.start-cards-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 25px 0px;
+}
+
+.start-card-chosen{
+    background-color: var(--lsecondary);
+}
+
+.start-card__img{
+    color: var(--lsecondary);
+}
+
+.start-card-chosen .start-card__img{
+    color: var(--lprimary);
+}
+
+.start-form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
