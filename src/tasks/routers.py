@@ -52,6 +52,7 @@ async def create_get_task(
     """ Получение информации о задании """
     return await task_service.get_task(
         user_id=current_user.user_id,
+        role=current_user.role,
         task_id=task_id
     )
 

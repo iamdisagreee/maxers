@@ -44,20 +44,20 @@ class TaskService:
                 ]
             )
 
-        is_user_needy = await self.user_repo.get_user_by_id_needy(
-            user_id=user_id,
-            role=role
-        )
-
-        if not is_user_needy:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail=[
-                    {
-                        'msg': "No access to create tasks"
-                    }
-                ]
-        )
+        # is_user_needy = await self.user_repo.get_user_by_id_needy(
+        #     user_id=user_id,
+        #     role=role
+        # )
+        #
+        # if not is_user_needy:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_403_FORBIDDEN,
+        #         detail=[
+        #             {
+        #                 'msg': "No access to create tasks"
+        #             }
+        #         ]
+        # )
 
         points = 5
         await self.task_repo.add_task(
@@ -100,6 +100,7 @@ class TaskService:
     async def get_task(
             self,
             user_id: int,
+            role: str,
             task_id: UUID
     ):
 
@@ -112,15 +113,23 @@ class TaskService:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail= [
                     {
-                        'msg': 'No task with this id / No access to view'
+                        'msg': 'No task with this id '
                     }
                 ]
             )
-        print(datetime.fromisoformat(str(task.created_at.replace(tzinfo=ZoneInfo('Europe/Moscow')))))
-        # print(task.created_at)
-        # print(datetime.now(tz=ZoneInfo('Europe/Moscow')))
-        # task.created_at=task.created_at.replace(tzinfo=ZoneInfo('Europe/Moscow'))
+        no_access = HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=[
+                {
+                    'msg': 'No access to view'
+                }
+            ]
+        )
 
+        if (task.helper is None) and (role == 'Needy' and task.needy != user_id):
+            raise no_access
+        elif (task.helper is not None) and user_id not in (task.needy, task.helper):
+            raise no_access
         return task
 
     async def update_task(

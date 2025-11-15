@@ -86,7 +86,7 @@ class TaskRepository:
             select(Task)
             .where(
                 Task.id == task_id,
-                or_(Task.helper == user_id, Task.needy == user_id)
+                # or_(Task.helper == user_id, Task.needy == user_id)
             )
         )
 
