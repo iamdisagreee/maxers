@@ -1,0 +1,39 @@
+services:
+  app_backend_service:
+    build: ./backend
+    ports:
+      - 8080:8000
+    env_file:
+      - ./backend/.env
+    volumes:
+      - app_backend_data:/app/src/data
+    depends_on:
+      - app_backend_pg
+
+  app_backend_pg:
+    image: postgres:latest
+    env_file:
+      - ./backend/.env
+    volumes:
+      - app_backend_pg_data:/var/lib/postgresql
+    ports:
+      - 5433:5432
+    restart: on-failure
+
+  app_frontend_service:
+    build: ./frontend
+    volumes:
+      - app_frontend_data:/app/src/data
+    ports:
+      - 4000:4000
+
+  app_bot_service:
+    build: ./bot
+    volumes:
+      - app_bot_data:/app/src/data
+
+volumes:
+  app_backend_data:
+  app_backend_pg_data:
+  app_frontend_data:
+  app_bot_data:
