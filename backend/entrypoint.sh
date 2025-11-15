@@ -1,0 +1,10 @@
+#!/bin/bash
+mkdir -p src/migrations/versions
+echo "Create database migration..."
+alembic revision --autogenerate -m "Initial migration"
+
+echo "Connect database migration..."
+alembic upgrade head
+
+uvicorn src.main:app --host 0.0.0.0 --reload --port 8000
+
