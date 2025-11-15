@@ -112,3 +112,7 @@
 .sheet-back-btn{
   cursor: pointer;
 }
+
+.sheet-task-page{
+  padding: 30px;
+}

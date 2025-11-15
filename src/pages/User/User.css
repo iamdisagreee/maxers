@@ -90,6 +90,18 @@
     filter: grayscale(90);
 }
 
+.city-info-edit{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stat-card-rating{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 /* .achievement-active{
     background-color: #A8D8B9;
     border: 3px solid #71CB594D;

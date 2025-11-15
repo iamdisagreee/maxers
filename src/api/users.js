@@ -24,7 +24,7 @@ export const getUser = async (id, token) => {
  * @returns {Promise<object>}
  */
 export const updateUser = async (id, data, token) => {
-  const response = await axios.patch(`${DEFAULT_API_URL}/api/v1/users/${id}`, data, {
+  const response = await axios.patch(`${DEFAULT_API_URL}/api/v1/users/`, data, {
     headers: { Authorization: `Bearer ${token}` }
   });
   return response.data;

@@ -99,8 +99,8 @@ export default function App() {
         await Storage.init();
         let t = await Storage.getToken();
         let r = await Storage.getRole(); 
-        t = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OTg1NDEzMCIsInJvbGUiOiJOZWVkeSIsImNpdHkiOiJcdTA0MmZcdTA0NDBcdTA0M2VcdTA0NDFcdTA0M2JcdTA0MzBcdTA0MzJcdTA0M2JcdTA0NGMifQ.395L_-OOsPBYkEKuDOwQzTZ3x_F99KQKASS1MGB0Y0E"
-        r = "Needy"
+        // t = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OTg1NDEzMCIsInJvbGUiOiJOZWVkeSIsImNpdHkiOiJcdTA0MmZcdTA0NDBcdTA0M2VcdTA0NDFcdTA0M2JcdTA0MzBcdTA0MzJcdTA0M2JcdTA0NGMifQ.395L_-OOsPBYkEKuDOwQzTZ3x_F99KQKASS1MGB0Y0E"
+        // r = "Needy"
         const p = await Storage.getProfile();
         setRole(r);
         setToken(t);
