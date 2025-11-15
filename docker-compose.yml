@@ -1,7 +1,0 @@
-services:
-  max_bot_service:
-    build: .
-    volumes:
-      - max_bot_data:/app/src/data
-volumes:
-  max_bot_data:
