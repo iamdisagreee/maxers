@@ -72,7 +72,6 @@ export default function ModalList({
     if (onClose) onClose(result);
   }
 
-  // Default mapping Russian -> server codes (as you provided)
   const defaultReasonMap = {
     // decline
     'Физически не получилось': 'Physical',
@@ -83,7 +82,7 @@ export default function ModalList({
     'Волонтёр не выполнил': 'Plans'
   };
 
-  // Merge override (user can pass reasonMapOverride prop to change any mapping)
+
   const reasonMap = { ...defaultReasonMap, ...reasonMapOverride };
 
   async function handleSubmit() {
@@ -108,16 +107,12 @@ export default function ModalList({
       if (!token) throw new Error('Токен для запроса не найден.');
 
       if (type === 'report') {
-        // call createTaskReport (signature createTaskReport(taskId, token))
         const resp = await createTaskReport(taskId, token);
         setSuccessText(resp?.detail || 'Жалоба отправлена');
         if (onSubmit) onSubmit(resp);
         setTimeout(() => { if (mounted) close(resp); }, 600);
       } else if (type === 'decline' || type === 'cancelRequest') {
-        // Build payload that exactly matches server schema
-        // status: "Cancelled", helper: null, rating: { taskPoints: int|null, reviewPoints: null, reasonReject: string|null }
         const reasonCode = (selected in reasonMap) ? reasonMap[selected] : selected;
-        // Ensure taskPoints is integer or null
         const tPoints = (
           taskPoints === null || taskPoints === undefined
             ? null
@@ -130,7 +125,7 @@ export default function ModalList({
           rating: {
             taskPoints: tPoints,      // integer | null
             reviewPoints: null,       // integer | null
-            reasonReject: reasonCode  // string | null (one of "Physical","Plans","Search" or null)
+            reasonReject: reasonCode  // string | null ("Physical","Plans","Search"  null)
           }
         };
 

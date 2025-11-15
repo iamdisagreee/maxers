@@ -6,10 +6,10 @@
 .task-category{
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 3px 7px;
-    height: 20px;
-    gap: 10px;
+    justify-content: space-between;
+    padding: 4px 5px;
+    height: 25px;
+    gap: 5px;
     border-radius: 12px;
 }
 

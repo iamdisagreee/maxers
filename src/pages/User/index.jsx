@@ -16,8 +16,8 @@ import { useTaskOpener } from '../../contexts/TaskOpenerContext';
 import Rating from '../../components/Rating';
 
 export default function User({ profile, role, token }) {
-  const { id: urlId } = useParams();              // ID из URL если есть
-  const userId = urlId || profile?.id;            // Фолбэк на profile.id
+  const { id: urlId } = useParams();     
+  const userId = urlId || profile?.id;  
   const isHelper = role === 'Helper';
   const isNeedy = role === 'Needy';
 
@@ -53,9 +53,7 @@ export default function User({ profile, role, token }) {
     return () => { mounted = false; };
   }, [userId, token]);
 
-  // загрузка задач (отдельный useEffect)
   useEffect(() => {
-    // не грузим, если нет role/token
     if (!role || !token) return;
 
     let mounted = true;
@@ -64,13 +62,10 @@ export default function User({ profile, role, token }) {
       setTasksError(null);
 
       try {
-        // Тип списка: у тебя в примере 'user' для Helper, 'pending' для Needy
         const typeList = isHelper ? 'user' : 'pending';
-        // Предполагаю сигнатуру getAllTasks(token, page, type)
         const data = await getAllTasks(token, 1, typeList);
         if (!mounted) return;
 
-        // Если API возвращает объект { results: [...] } или просто массив — обработаем оба случая
         const list = Array.isArray(data) ? data : (data?.results || data?.items || []);
         setTasks(list);
       } catch (err) {
@@ -97,7 +92,7 @@ export default function User({ profile, role, token }) {
     }
   };
   
-  // helper: если ещё нет данных — показываем загрузку
+
   if (loadingUser) return <div className="user">Загрузка профиля...</div>;
   if (!userData) return <div className="user">Профиль не найден</div>;
 

@@ -4,13 +4,13 @@ import TaskCategory from "../TaskCategory"
 import CategorySelect from '../CategorySelect'
 import Button from "../Button"
 import { useTaskOpener } from '../../contexts/TaskOpenerContext'
-import { addTask } from '../../api/tasks' // <- путь к API, поправь если по-другому
+import { addTask } from '../../api/tasks'
 
 export default function TaskCreate() {
   const { close } = useTaskOpener()
 
   // форма
-  const [category, setCategory] = useState(null) // string key из CATEGORY_MAP, например "Different"
+  const [category, setCategory] = useState(null)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [city, setCity] = useState('')
@@ -19,7 +19,7 @@ export default function TaskCreate() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // валидация: все поля обязательны
+  // валидация
   const isFormValid = category && name.trim() && description.trim() && city.trim() && address.trim()
 
   async function handleSubmit(e) {
@@ -29,8 +29,7 @@ export default function TaskCreate() {
     setLoading(true)
     setError(null)
 
-    // Получение токена — пример: localStorage. Если у вас другой источник,
-    // замените на useSelector/useContext и т.д.
+
     const token = localStorage.getItem('token') || localStorage.getItem('accessToken')
 
     if (!token) {
@@ -40,7 +39,7 @@ export default function TaskCreate() {
     }
 
     const payload = {
-      category: category, // строка, как в CATEGORY_MAP (например "Different")
+      category: category,
       name: name.trim(),
       description: description.trim(),
       city: city.trim(),
@@ -49,11 +48,9 @@ export default function TaskCreate() {
 
     try {
       await addTask(payload, token)
-      // при успешном создании — закрываем окно/лист
       close()
     } catch (err) {
       console.error('addTask error', err)
-      // Постарайся получить текст ошибки
       const message = err?.response?.data?.detail || err?.message || 'Ошибка при создании просьбы'
       setError(message)
     } finally {

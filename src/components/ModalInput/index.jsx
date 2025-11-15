@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './ModalInput.css';
 import Input from '../Input';
-import { updateUser } from '../../api/users'; // твой метод для PATCH
-import { Storage } from '../../utils/storage'; // для получения токена и id профиля
+import { updateUser } from '../../api/users'; 
+import { Storage } from '../../utils/storage';
 
 export default function ModalInput() {
   const [isOpen, setIsOpen] = useState(true); 
@@ -14,7 +14,6 @@ export default function ModalInput() {
   const handleConfirm = async () => {
     try {
       setLoading(true);
-      // Получаем токен и профиль
       const token = await Storage.getToken();
       const profile = await Storage.getProfile();
       const userId = profile?.id;
@@ -24,11 +23,10 @@ export default function ModalInput() {
         return;
       }
 
-      // Отправляем PATCH запрос
       const updatedUser = await updateUser(userId, { city }, token);
       console.log('Город обновлён:', updatedUser);
 
-      setIsOpen(false); // закрываем модалку
+      setIsOpen(false);
     } catch (err) {
       console.error('Ошибка обновления города:', err);
     } finally {

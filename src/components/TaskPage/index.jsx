@@ -220,9 +220,8 @@ export default function TaskPage({ taskId = null, initialTask = null }) {
   let showMainButton = false
   let mainButtonDisabled = false
 
-console.warn(`is mine ${isMyTask} | status ${status} | ${isHelperInTask}`)
 
-  if (isHelper && !hasHelper && status !== 'Completed' && status !== 'Cancelled') {
+  if (!isMyTask && !hasHelper && status != 'Completed' && status != 'Cancelled') {
     // Хелпер может принять задание, если helper пустой и задание активно
     mainButtonText = 'ПРИНЯТЬ ЗАДАНИЕ'
     mainButtonAction = 'accept'
@@ -331,12 +330,16 @@ console.warn(`is mine ${isMyTask} | status ${status} | ${isHelperInTask}`)
         ) : (
           <>
             {shouldShowContact && (
-              <a 
-                href={hasHelper ? profileUrl : '#'} 
-                target="_blank" 
-                rel="noreferrer" 
-                className={`sheet-task__user-info ${hasHelper ? 'user-info-accepted' : ''}`}
-              >
+                <a 
+                  href={hasHelper ? profileUrl : undefined}
+                  target={hasHelper ? "_blank" : undefined}
+                  rel={hasHelper ? "noreferrer" : undefined}
+                  className={`sheet-task__user-info ${hasHelper ? 'user-info-accepted' : ''}`}
+                  style={{ 
+                    pointerEvents: hasHelper ? 'auto' : 'none',
+                    cursor: hasHelper ? 'pointer' : 'default'
+                  }}
+                >
                 <div className="user-info-personal">
                   <img
                     className="user-info__avatar"

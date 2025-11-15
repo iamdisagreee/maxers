@@ -102,6 +102,10 @@
     gap: 8px;
 }
 
+.stat-card-icon-svg{
+    width: 20px;
+}
+
 /* .achievement-active{
     background-color: #A8D8B9;
     border: 3px solid #71CB594D;

@@ -3,6 +3,13 @@
     align-items: center;
     justify-content: space-between;
     gap: 8px;
+    width: 100%;
+}
+
+.task-card__photo-name{
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .task-card__location{

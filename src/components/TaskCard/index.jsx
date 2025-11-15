@@ -9,8 +9,8 @@ import TaskStatus from '../TaskStatus'
 import mapPin from '../../assets/svg/map-pin.svg'
 import personIcon from '../../assets/svg/person.svg'
 import PillIcon from '../../assets/svg/pill.svg?react';
-import { getUser } from '../../api/users' // <- проверь путь к методу getUser
-import { Storage } from '../../utils/storage' // <- используем Storage.getToken()
+import { getUser } from '../../api/users' 
+import { Storage } from '../../utils/storage'
 
 /**
  * TaskCard
@@ -34,12 +34,10 @@ export default function TaskCard({ task, type = 'Helper' }) {
     let mounted = true
 
     async function fetchNeedy() {
-      // если нет id — ничего не делаем
       if (!task?.needy) return
 
       setNeedyLoading(true)
       try {
-        // берем токен из Storage, если нет — fallback на localStorage
         const token = (await Storage.getToken()) || window.localStorage.getItem('accessToken') || window.localStorage.getItem('token')
 
         if (!token) {
@@ -75,11 +73,11 @@ export default function TaskCard({ task, type = 'Helper' }) {
     );
   };
 
-  // helper: читаем поля с запасом
+
   const id = task.id || "id";
   const title = task.name || 'Без названия';
   const categoryRaw = task.category || '';
-  // передаём в TaskCategory тот ключ, который приходит из API (например "Repairs")
+
   const categoryKey = categoryRaw || 'Different';
   const city = task.city || '';
   const address = task.address || '';
@@ -91,14 +89,14 @@ export default function TaskCard({ task, type = 'Helper' }) {
 
   function timeAgo(date) {
     if (!date) return '';
-    const diff = Math.floor((Date.now() - date.getTime()) / 1000); // seconds
+    const diff = Math.floor((Date.now() - date.getTime()) / 1000);
     if (diff < 60) return `${diff}с`;
     if (diff < 3600) return `${Math.floor(diff / 60)}м`;
     if (diff < 86400) return `${Math.floor(diff / 3600)}ч`;
     return `${Math.floor(diff / 86400)}д`;
   }
 
-  // Если есть данные user от API — используем их, иначе fallback к полям задачи или заглушкам
+
   const needyLabel = needyUser
     ? (needyUser.firstName || needyUser.username || `user#${needyUser.id}`)
     : (task.needy_name || (task.needy ? `user#${task.needy}` : null));
@@ -114,13 +112,14 @@ export default function TaskCard({ task, type = 'Helper' }) {
         <>
           <div className="task-card-top">
             <div className="task-card__user-info">
-              {/* аватар — если нет, показать заглушку */}
-              <img
-                className="user-info__avatar"
-                src={needyAvatar}
-                alt={needyLabel || 'Аватар'}
-              />
-              <h5 className="h5 inter-500">{needyLoading ? 'Загрузка...' : (needyLabel || 'Нуждающийся')}</h5>
+              <div className="task-card__photo-name">
+                <img
+                  className="user-info__avatar"
+                  src={needyAvatar}
+                  alt={needyLabel || 'Аватар'}
+                />
+                <h5 className="h5 inter-500">{needyLoading ? 'Загрузка...' : (needyLabel || 'Нуждающийся')}</h5>
+              </div>
 
               {/* категория */}
               <TaskCategory type={categoryKey}></TaskCategory>

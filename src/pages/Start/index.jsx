@@ -13,22 +13,23 @@ export default function Start({ storageReady, profile, token, onAuthSet}) {
   const [city, setCity] = useState('');
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const chooseRole = (role) => setSelectedRole(role);
 
   useEffect(() => {
     if (storageReady && token) {
-      navigate('/'); // редирект на главную, если токен есть
+      navigate('/'); 
     }
   }, [storageReady, token, navigate]);
 
 const handleProceed = async () => {
-  if (!selectedRole) return; // роль обязательно
+  if (!selectedRole) return;
 
   setLoading(true);
   try {
     const userData = {
-      userId: profile?.id || 0,           // если профиль есть
+      userId: profile?.id || 0,
       username: profile?.username || '', 
       firstName: profile?.first_name || '',
       lastName: profile?.last_name || '',
@@ -36,20 +37,20 @@ const handleProceed = async () => {
       city,
       url
     };
-
+    setErrorMessage('');
     const { accessToken } = await createUser(userData);
 
     console.log(`Получил accesstoken ${accessToken} and role ${selectedRole}`)
 
     if (accessToken) {
-      await onAuthSet(accessToken, selectedRole); // <-- добавлено
+      await onAuthSet(accessToken, selectedRole);
     }
 
-    // После успешной регистрации редирект на главную
+
     navigate('/');
   } catch (err) {
     console.error(err)
-    alert('Ошибка при создании пользователя. Попробуйте снова.');
+    setErrorMessage(err?.message || 'Ошибка при создании пользователя.');
   } finally {
     setLoading(false);
   }
@@ -111,7 +112,7 @@ const handleProceed = async () => {
           iconAfter={<img src={searchIcon} alt="" style={{ width: 20, height: 20 }} />}
         />
         <Input
-          placeholder="Ссылка на вас"
+          placeholder="Ссылка на ваш MAX"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />
@@ -127,6 +128,9 @@ const handleProceed = async () => {
           Вперёд
         </Button>
       </div>
+      {errorMessage && (
+        <p className="accent-red p inter-500">{errorMessage}</p>
+      )}
     </div>
   );
 }
