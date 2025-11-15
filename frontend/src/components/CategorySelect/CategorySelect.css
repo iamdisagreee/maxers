@@ -1,0 +1,11 @@
+.category-dropdown{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* .category-dropdown li{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+} */
