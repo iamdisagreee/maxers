@@ -1,0 +1,126 @@
+.user-avatar{
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+}
+
+.user-personal{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.user-personal-status{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    border-radius: 25px;
+    flex-grow: 0;
+    width: fit-content;
+    padding: 2px 5px;
+}
+
+.stat-card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100px;
+}
+
+.stat-card-top{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stat-cards{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-card-description{
+    text-align: center;
+}
+
+.user{
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-top: 15px;
+}
+
+.user .h3{
+    margin: 20px 0;
+}
+
+.goods-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.achievements{
+    display: flex;
+    gap: 10px;
+
+}
+
+.achievement{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    width: 108px;
+    padding: 20px 0;
+    border-radius: 25px;
+    background-color: #A8D8B9;
+    border: 3px solid #71CB594D;
+}
+
+.achievement .achievement-text{
+    text-align: center;
+    color: #F7F8FA;
+}
+
+.achievement-inactive{
+    filter: grayscale(90);
+}
+
+.city-info-edit{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stat-card-rating{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-card-icon-svg{
+    width: 20px;
+}
+
+/* .achievement-active{
+    background-color: #A8D8B9;
+    border: 3px solid #71CB594D;
+}
+
+.achievement-active .achievement-text{
+    color: #F7F8FA;
+} */
+
+
+/* .achievement-inactive{
+    background-color: #0000001A;
+    border: solid 3px #7E828C4D;
+}
+
+.achievement-inactive .achievement-text{
+    color: #7E828C;
+} */

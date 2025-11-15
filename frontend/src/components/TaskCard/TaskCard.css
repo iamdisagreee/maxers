@@ -1,0 +1,95 @@
+.task-card__user-info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+}
+
+.task-card__photo-name{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.task-card__location{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-location__icon{
+    width: 12px;
+    height: 12px;
+}
+
+.task-card{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #fff;
+    padding: 10px 10px 10px 20px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.task-card-center{
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.task-card__points{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background-color: var(--llsecondary);
+    border: 2px solid var(--lsecondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}
+
+.card-points__icon{
+    width: 20px;
+    height: 20px;
+    color: var(--dsecondary);
+}
+
+.card-points__value{
+    color: var(--dsecondary);
+}
+
+.user-info__avatar{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.task-card-top{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.card-points__icon{
+    width: 15px;
+    height: 15px;
+}
+.card-points__icon, .card-points__value{
+    color: var(--lsecondary);
+}
+
+.task-card-category-big{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+.task-category__big-icon{
+    width: 36px;
+    height: 36px;
+}
