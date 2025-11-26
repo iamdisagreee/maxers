@@ -101,7 +101,7 @@ class TaskRepository:
             .values(**to_update)
             .where(
                 Task.id == task_id,
-                or_(Task.helper == user_id, Task.needy == user_id)
+               # or_(Task.helper == user_id, Task.needy == user_id)
             )
             .returning(Task)
         )

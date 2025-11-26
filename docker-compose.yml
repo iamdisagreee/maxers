@@ -2,7 +2,7 @@ services:
   app_backend_service:
     build: ./backend
     ports:
-      - 8080:8000
+      - 8000:8000
     env_file:
       - ./backend/.env
     volumes:
@@ -17,7 +17,7 @@ services:
     volumes:
       - app_backend_pg_data:/var/lib/postgresql
     ports:
-      - 5433:5432
+      - 5432:5432
     restart: on-failure
 
   app_frontend_service:
